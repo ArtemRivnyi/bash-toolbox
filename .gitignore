@@ -1,0 +1,28 @@
+# Log files
+*.log
+*.tmp
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Backup files
+*.bak
+*.backup
+
+# Temporary files
+/tmp/
+/var/tmp/
+
+# Sensitive data
+*credentials*
+*config*
+
+# Script backups
+*-backup.sh
+*.old
+
+# Test files
+/test/
+/temp/
+EOF
