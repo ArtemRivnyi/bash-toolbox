@@ -1,303 +1,372 @@
 # ⚙️ Bash Toolkit: Essential System Administration Scripts
 
-**Bash Toolkit** is a collection of essential shell scripts designed to streamline common system administration tasks across various operating systems. These scripts provide robust solutions for network diagnostics, system monitoring, backup management, log cleaning, and more, empowering users with efficient command-line utilities.
+**Bash Toolkit** is a collection of cross-platform Bash scripts designed to automate key tasks in system administration, monitoring, and diagnostics. The scripts feature minimal dependencies, high compatibility (Linux, macOS, Windows via Git Bash/PowerShell), and are integrated with Telegram for instant notifications.
 
 ## 📝 Table of Contents
 
 *   [✨ Overview](#-overview)
-*   [🗂️ Project Structure](#-project-structure)
-*   [🚀 Current Scripts](#-current-scripts)
-    *   [🌐 `internet-check.sh` - Comprehensive Internet Connectivity Monitor](#-internet-checksh---comprehensive-internet-connectivity-monitor)
-    *   [🖥️ `system-monitor.sh` - Cross-Platform System Resource Monitor](#-system-monitorsh---cross-platform-system-resource-monitor)
-    *   [📦 `backup-manager.sh` - Advanced Backup and Retention System](#-backup-managersh---advanced-backup-and-retention-system)
-    *   [🧹 `log-cleaner.sh` - Simple and Efficient Log File Management](#-log-cleanersh---simple-and-efficient-log-file-management)
-*   [🔮 Future Scripts (Under Development)](#-future-scripts-under-development)
-    *   [📡 `telegram-ping-monitor.sh` - Telegram Ping Monitor](#-telegram-ping-monitorsh---telegram-ping-monitor)
-    *   [💾 `disk-usage-alert.sh` - Disk Space Monitoring and Alerting](#-disk-usage-alertsh---disk-space-monitoring-and-alerting)
-    *   [💚 `service-health-check.sh` - Service Health and Status Monitor](#-service-health-checksh---service-health-and-status-monitor)
-*   [🤝 Contribution](#-contribution)
-*   [📄 License](#-license)
+*   [📂 Project Structure](#-project-structure)
+*   [🚀 Current Script Status](#-current-script-status)
+*   [🎯 Detailed Description and Capabilities](#-detailed-description-and-capabilities)
+*   [🆕 Future Innovations and Roadmap](#-future-innovations-and-roadmap)
+
+---
 
 ## ✨ Overview
 
-This repository houses a growing collection of versatile Bash scripts aimed at simplifying routine system administration and monitoring tasks. Each script is designed for ease of use, cross-platform compatibility where possible, and provides clear, actionable insights or automated solutions. Whether you need to diagnose network issues, keep an eye on system resources, manage backups, or clean up old logs, this toolkit offers a robust command-line utility for the job.
+This toolkit provides seven powerful scripts for maintaining the health and stability of your infrastructure. All scripts are designed with cross-platform compatibility in mind and use a unified approach to Telegram configuration for alerts.
 
-## 🗂️ Project Structure
+## 📂 Project Structure
+
+The project maintains a simple, flat structure for ease of use and portability.
 
 ```
-bash-toolkit/
-├── README.md
-├── internet-check.sh
-├── system-monitor.sh
+.
 ├── backup-manager.sh
-├── log-cleaner.sh
-├── telegram-ping-monitor.sh
 ├── disk-usage-alert.sh
-└── service-health-check.sh
+├── internet-check.sh
+├── log-cleaner.sh
+├── service-health-check.sh
+├── system-monitor.sh
+├── telegram-ping-monitor.sh
+├── README.md
+└── LICENSE (Planned)
 ```
 
-## 🚀 Current Scripts
+## 🚀 Current Script Status
 
-### 🌐 `internet-check.sh` - Comprehensive Internet Connectivity Monitor
+### ✅ Scripts with Telegram Integration (v1.0)
 
-This robust bash script provides a multi-faceted approach to diagnosing internet connectivity issues. It performs sequential checks for network reachability (ping), DNS resolution, and HTTP/HTTPS access to various public endpoints. Designed for cross-platform compatibility (Linux, macOS, and Windows via Git Bash), it offers clear, color-coded output and detailed logging for easy troubleshooting.
+| Script | Description | Key Features |
+| :--- | :--- | :--- |
+| `telegram-ping-monitor.sh` | Host availability monitoring. | Notifications on status change (up/down/degraded). Configurable check intervals and spam protection. |
+| `disk-usage-alert.sh` | Disk space monitoring. | Threshold notifications (warning/critical). Supports Windows/Linux/macOS. Uses PowerShell for accuracy on Windows. |
+| `service-health-check.sh` | System service monitoring. | Tracks service status (systemd/init/Windows services). Notifications on failures and recoveries. |
+| `internet-check.sh` | Comprehensive network check. | Multi-stage diagnostics (Ping, DNS, HTTP/HTTPS, Speed Test). |
+| `system-monitor.sh` | CPU, RAM, Disk monitoring. | Cross-platform metric collection with color-coded thresholds. |
+| `backup-manager.sh` | Backup creation and management. | Retention, inspection, and restoration features. |
+| `log-cleaner.sh` | Log cleanup and rotation. | Cleanup by age, rotation by count, and dry-run mode. |
+| :--- | :--- | :--- |
+| **Note:** Only the first three scripts (`telegram-ping-monitor.sh`, `disk-usage-alert.sh`, `service-health-check.sh`) currently support Telegram notifications. Integration for the remaining four is planned for v1.1.
 
-**Key Features:**
+### 🔄 Planned Telegram Integration (v1.1)
 
-**Cross-Platform Support**: This script works seamlessly across Linux, macOS, and Windows (Git Bash).
-**Multi-Stage Diagnostics**: It verifies connectivity through ping to multiple IP addresses, DNS resolution for various domains, and HTTP/HTTPS reachability to popular websites.
-**Dynamic Command Detection**: The script intelligently uses available tools such as `ping`, `nslookup`/`host`/`dig`, and `curl`/`wget` based on the detected operating system.
-**Detailed Output**: It provides color-coded status messages for a quick visual assessment of connectivity health.
-**Comprehensive Logging**: All checks and their outcomes are recorded to a dedicated log file (`/tmp/internet-check.log`) for historical analysis.
-**Network Information**: It displays essential network details, including OS type, kernel version, hostname, IP address, and default gateway.
+The following scripts are planned to be enhanced in **v1.1** to include **full Telegram notification support**:
 
-**Usage:**
+| Script | Description | Planned Telegram Feature |
+| :--- | :--- | :--- |
+| `internet-check.sh` | Comprehensive network check. | Telegram alerts for complete internet loss and speed threshold breaches. |
+| `system-monitor.sh` | CPU, RAM, Disk monitoring. | Telegram alerts for high load (CPU >90%, RAM >90%). |
+| `backup-manager.sh` | Backup creation and management. | Telegram reports on backup success/failure and warnings for low backup space. |
+| `log-cleaner.sh` | Log cleanup and rotation. | Telegram reports on cleanup results and warnings for critically large logs. |
+
+---
+
+## 🎯 Detailed Description and Capabilities
+
+### 📡 `telegram-ping-monitor.sh` - Host Availability Monitoring
+
+The script checks the availability of a list of hosts using `ping` and sends Telegram notifications when their status changes.
+
+| Capability | Implementation Details |
+| :--- | :--- |
+| **Status Monitoring** | Tracks transitions between `up`, `degraded` (partial packet loss), and `down`. |
+| **Cross-Platform** | Adapts `ping` commands (`-c`, `-W` for Linux/macOS, `-n`, `-w` for Windows) for correct operation. |
+| **Spam Protection** | Uses a configurable cooldown (`ALERT_COOLDOWN`) to prevent multiple alerts for the same failure. |
+| **Configuration** | Configurable via interactive mode and the `.telegram-ping-monitor.conf` file. |
+
+#### Usage and Commands
+
+| Command | Description | Example |
+| :--- | :--- | :--- |
+| `config` | Interactive configuration setup (Telegram tokens, hosts, intervals). | `./telegram-ping-monitor.sh config` |
+| `start` | Starts the continuous monitoring loop. | `./telegram-ping-monitor.sh start` |
+| `status` | Shows the current status of monitored hosts and recent log entries. | `./telegram-ping-monitor.sh status` |
+| `test` | Sends a test Telegram notification. | `./telegram-ping-monitor.sh test` |
+| `log` | Shows the recent log file entries. | `./telegram-ping-monitor.sh log` |
+
+#### Example Output (Status)
 
 ```bash
-bash internet-check.sh
+$ ./telegram-ping-monitor.sh status
+[2025-10-25 10:00:00] Monitoring Status Report
+--------------------------------------------------
+Host: google.com (8.8.8.8)
+  Status: UP (Last check: 10:00:00)
+  Latency: 15.2 ms
+Host: local-server (192.168.1.10)
+  Status: DEGRADED (Last check: 09:59:30)
+  Packet Loss: 15%
+Host: external-api (10.0.0.5)
+  Status: DOWN (Since: 09:55:00)
+  Last Alert: DOWN (Sent to Telegram)
+--------------------------------------------------
 ```
 
-**Example Output:**
+### 💾 `disk-usage-alert.sh` - Disk Space Monitoring
 
-```text
-🌐 Comprehensive Internet Connectivity Check
-==========================================
-Detected OS: linux-ubuntu
-Kernel: Linux 5.15.0-101-generic x86_64
-Starting internet check on linux-ubuntu - Linux 5.15.0-101-generic x86_64
+The script monitors the percentage of disk usage for specified mount points and alerts when set thresholds are exceeded.
 
-📡 Checking network connectivity...
-  Testing 8.8.8.8... ✓
-  Testing 1.1.1.1... ✓
-  Testing 208.67.222.222... ✓
-✅ Network connectivity: 3/3 targets reachable
+| Capability | Implementation Details |
+| :--- | :--- |
+| **Threshold Notifications** | Supports `WARNING` (default 80%) and `CRITICAL` (default 90%) levels. |
+| **Cross-Platform** | Uses `df` on Linux/macOS, and `PowerShell` on Windows for reliable disk data retrieval (e.g., `C:`). |
+| **Configuration** | Configurable via interactive mode, including `WARNING_THRESHOLD`, `CRITICAL_THRESHOLD`, and the list of monitored mount points. |
+| **Anti-Spam** | Uses an alert cooldown (`ALERT_COOLDOWN`). |
 
-🔍 Testing DNS resolution...
-Using DNS tool: dig
-  google.com... ✓
-  github.com... ✓
-  stackoverflow.com... ✓
-  cloudflare.com... ✓
-✅ DNS resolution: 4/4 domains resolved
+#### Usage and Commands
 
-🌐 Testing HTTP/HTTPS connectivity...
-Using: curl
-  https://www.google.com... ✓
-  https://www.cloudflare.com... ✓
-  https://httpbin.org/get... ✓
-✅ HTTP/HTTPS: 3/3 endpoints reachable
+| Command | Description | Example |
+| :--- | :--- | :--- |
+| `config` | Interactive configuration setup (Telegram tokens, thresholds, mounts). | `./disk-usage-alert.sh config` |
+| `start` | Starts the continuous monitoring loop. | `./disk-usage-alert.sh start` |
+| `status` | Shows the current disk usage for monitored mounts. | `./disk-usage-alert.sh status` |
+| `test` | Sends a test Telegram notification. | `./disk-usage-alert.sh test` |
+| `log` | Shows the recent log file entries. | `./disk-usage-alert.sh log` |
 
-📊 Network Information:
-----------------------
-Hostname: my-server
-IP Address: 192.168.1.100
-Default Gateway: 192.168.1.1
-```
-
-### 🖥️ `system-monitor.sh` - Cross-Platform System Resource Monitor
-
-This versatile bash script provides real-time monitoring of key system resources, including CPU usage, RAM utilization, disk space, and load average. It is designed to be cross-platform compatible (Linux, macOS, and Windows via Git Bash), offering a unified way to observe system health. The script features color-coded output for quick status identification and logs all metrics for historical tracking and analysis.
-
-**Key Features:**
-
-**Cross-Platform Compatibility**: This script supports Linux, macOS, and Windows (Git Bash), adapting its commands based on the detected operating system.
-**Comprehensive Metrics**: It monitors CPU usage, RAM usage, disk usage (for the root partition), and system load average (on Unix-like systems).
-**Color-Coded Alerts**: Resource usage is color-coded (green for normal, yellow for warning, red for critical) based on configurable thresholds, allowing for immediate visual alerts.
-**Persistent Logging**: All collected metrics are logged to `/tmp/system-monitor.log`, enabling long-term performance tracking and post-mortem analysis.
-**System Information**: It displays basic system details such as OS type, kernel version, hostname, and uptime (on Windows).
-**PowerShell Integration for Windows**: For Windows environments, it utilizes PowerShell for reliable metric collection, ensuring accurate data.
-
-**Usage:**
+#### Example Output (Status)
 
 ```bash
-bash system-monitor.sh
+$ ./disk-usage-alert.sh status
+[2025-10-25 10:05:00] Disk Usage Report
+--------------------------------------------------
+Filesystem: /dev/sda1 (Mounted on /)
+  Usage: 78% (Status: OK)
+  Threshold: WARNING (80%), CRITICAL (90%)
+Filesystem: /dev/sdb1 (Mounted on /var/log)
+  Usage: 85% (Status: WARNING)
+  Threshold: WARNING (80%), CRITICAL (90%)
+  Last Alert: WARNING (Sent to Telegram)
+Filesystem: C: (Mounted on /mnt/c) - Windows
+  Usage: 92% (Status: CRITICAL)
+  Threshold: WARNING (80%), CRITICAL (90%)
+  Last Alert: CRITICAL (Sent to Telegram)
+--------------------------------------------------
 ```
 
-**Example Output (Linux):**
+### 💚 `service-health-check.sh` - System Service Monitoring
 
-```text
-🖥️ System Monitor
-====================
+The script checks the status of critical system services and notifies of any status changes.
 
-📊 System Metrics - linux
-==================================
-CPU Usage:    25.3%
-RAM Usage:    45.7%
-Disk Usage:   68%
-Load Average: 0.75
+| Capability | Implementation Details |
+| :--- | :--- |
+| **Init System Support** | Automatically detects and uses `systemctl` (Linux), `launchctl` (macOS), or `sc` (Windows) to check service status. |
+| **Failure Notifications** | Sends alerts when a service transitions from `running` to `stopped` and vice versa. |
+| **Configuration** | Configurable list of monitored services (`MONITOR_SERVICES`) and check interval. |
 
-🖥️ System Information:
-----------------------
-OS: linux
-Kernel: Linux 5.15.0-101-generic x86_64
-Hostname: my-linux-server
+#### Usage and Commands
 
-📝 Log written to: /tmp/system-monitor.log
+| Command | Description | Example |
+| :--- | :--- | :--- |
+| `config` | Interactive configuration setup (Telegram tokens, services, interval). | `./service-health-check.sh config` |
+| `start` | Starts the continuous monitoring loop. | `./service-health-check.sh start` |
+| `status` | Shows the current status of monitored services. | `./service-health-check.sh status` |
+| `test` | Sends a test Telegram notification. | `./service-health-check.sh test` |
+| `log` | Shows the recent log file entries. | `./service-health-check.sh log` |
 
-Last 3 entries:
-[2025-10-22 10:00:01] OS: linux | CPU: 24.5% | RAM: 45.1% | Disk: 67% | Load: 0.72
-[2025-10-22 10:00:02] OS: linux | CPU: 25.0% | RAM: 45.5% | Disk: 68% | Load: 0.74
-[2025-10-22 10:00:03] OS: linux | CPU: 25.3% | RAM: 45.7% | Disk: 68% | Load: 0.75
-```
-
-### 📦 `backup-manager.sh` - Advanced Backup and Retention System
-
-This script offers a robust solution for managing system backups, featuring compression, configurable retention policies, and cross-platform compatibility. It intelligently handles various backup sources, excludes specified patterns, and performs disk space checks to ensure successful operations. The script provides detailed logging and allows for easy inspection of backup archives without full extraction.
-
-**Key Features:**
-
-**Cross-Platform Support**: This script is designed to work on Linux, macOS, and Windows (via Git Bash).
-**Configurable Backup Sources**: It allows specifying multiple directories or files to be backed up, with defaults provided for common user data.
-**Smart Exclusions**: It supports excluding specific files or directories based on patterns (e.g., `node_modules`, `.git`, temporary files) to optimize backup size.
-**Compression and Retention**: The script creates compressed `tar.gz` archives and automatically cleans up old backups based on a configurable retention period (default 30 days).
-**Disk Space Pre-check**: It estimates backup size and verifies sufficient disk space before initiating the backup process.
-**Backup Inspection**: The script provides options to list the contents of a backup archive or extract it to a temporary directory for detailed inspection.
-**Detailed Logging**: All backup operations, successes, and failures are recorded to a log file (`/tmp/backup-manager.log`).
-**Configuration Management**: It supports loading and saving configuration parameters from `${HOME}/.backup-manager.conf`.
-
-**Usage:**
+#### Example Output (Status)
 
 ```bash
-bash backup-manager.sh [OPTIONS]
+$ ./service-health-check.sh status
+[2025-10-25 10:10:00] Service Health Report
+--------------------------------------------------
+Service: sshd (systemd)
+  Status: running
+  Uptime: 5 days 12 hours
+Service: nginx (systemd)
+  Status: stopped (Since: 10:08:00)
+  Last Alert: FAILURE (Sent to Telegram)
+Service: Windows Update (Windows)
+  Status: running
+  Last Check: 10:09:00
+--------------------------------------------------
 ```
 
-**Options:**
+### 🌐 `internet-check.sh` - Comprehensive Internet Connectivity Check
 
-*   `-c, --create`: Create a new backup.
-*   `-l, --list`: List existing backups.
-*   `-d, --delete <backup_file>`: Delete a specific backup file.
-*   `-C, --clean`: Clean old backups based on retention policy.
-*   `-i, --inspect <backup_file>`: Inspect contents of a backup file without full extraction.
-*   `-s, --source <path>`: Add a source directory/file to backup (can be used multiple times).
-*   `-D, --backup-dir <path>`: Set the backup destination directory.
-*   `-R, --retention <days>`: Set retention period in days.
-*   `-h, --help`: Show help message.
+The script performs a multi-stage network diagnostic, checking physical reachability, name resolution, and HTTP connectivity.
 
-**Example:**
+| Capability | Implementation Details |
+| :--- | :--- |
+| **Multi-Stage Diagnostics** | Includes Ping check (up to 3 DNS servers), DNS resolution (up to 4 domains), and HTTP availability (up to 3 URLs). |
+| **Cross-Platform** | Adapts to Linux, macOS, and Windows (Git Bash), using available utilities (`ipconfig`/`ip`/`ifconfig`, `curl`/`wget`). |
+| **Speed Test** | Includes an attempt to run `speedtest-cli` or an alternative download speed test via `curl`. |
+| **Logging** | Detailed log of all checks is saved for later analysis. |
+
+#### Usage and Commands
+
+| Command | Description | Example |
+| :--- | :--- | :--- |
+| (None) | Runs the comprehensive check and displays results. | `./internet-check.sh` |
+| `-h`, `--help` | Shows the help message (not implemented in script, but standard for Bash). | `./internet-check.sh -h` |
+
+#### Example Output
 
 ```bash
-bash backup-manager.sh --create --source "${HOME}/my_project" --retention 7
-bash backup-manager.sh --list
-bash backup-manager.sh --clean
+$ ./internet-check.sh
+[2025-10-25 10:15:00] Comprehensive Internet Check
+--------------------------------------------------
+1. Ping Check (google.com):
+   Status: OK (Avg Latency: 12.5 ms)
+2. DNS Resolution Check (cloudflare.com):
+   Status: OK (Resolved to: 104.16.123.96)
+3. HTTP/HTTPS Check (https://github.com):
+   Status: OK (HTTP Code: 200)
+4. Speed Test (Download):
+   Status: OK (Download Speed: 95.7 Mbps)
+--------------------------------------------------
+Overall Status: Internet is fully functional.
 ```
 
-### 🧹 `log-cleaner.sh` - Simple and Efficient Log File Management
+### 🖥️ `system-monitor.sh` - System Resource Monitoring
 
-This script provides a straightforward solution for managing log files and temporary data across various operating systems (Linux, macOS, and Windows via Git Bash). It focuses on essential functionality: cleaning old files based on retention policies and rotating files to maintain a manageable number of recent logs. Designed to be lightweight and efficient, it operates without complex graphical interfaces or extensive dependencies.
+The script collects and displays key resource usage metrics with color-coded threshold indication.
 
-**Key Features:**
+| Capability | Implementation Details |
+| :--- | :--- |
+| **Cross-Platform Metric Collection** | Collects CPU, RAM, and Disk Usage. Uses PowerShell for accurate data on Windows. |
+| **Color-Coded Indication** | Uses thresholds (e.g., 60%/85% for CPU) to highlight normal, warning, and critical states. |
+| **Logging** | All metrics are recorded to a log file with a timestamp. |
+| **System Information** | Displays OS, kernel, hostname, and uptime information. |
 
-**Cross-Platform Compatibility**: This script functions on Linux, macOS, and Windows (Git Bash).
-**Configurable Paths**: It allows specifying multiple directories where log files and temporary data should be cleaned.
-**Pattern-Based Cleaning**: The script targets files matching specific patterns (e.g., `*.log`, `*.tmp`, `*.cache`) for deletion.
-**Exclusion Patterns**: It prevents accidental deletion of important files by allowing exclusion patterns.
-**Retention Policy**: The script deletes files older than a specified number of days (default 30 days).
-**File Rotation**: It keeps only a defined number of the most recent files for each pattern, rotating out older ones (default 10 files).
-**Dry Run Mode**: It offers a `--dry-run` option to simulate the cleaning process without actually deleting any files, allowing for safe testing.
-**Simple Logging**: All actions are recorded to a dedicated log file (`/tmp/log-cleaner.log`) for auditing.
+#### Usage and Commands
 
-**Usage:**
+| Command | Description | Example |
+| :--- | :--- | :--- |
+| (None) | Runs the check, displays metrics, and logs the results. | `./system-monitor.sh` |
+| `-h`, `--help` | Shows the help message (not implemented in script, but standard for Bash). | `./system-monitor.sh -h` |
+
+#### Example Output
 
 ```bash
-bash log-cleaner.sh [OPTIONS]
+$ ./system-monitor.sh
+[2025-10-25 10:20:00] System Resource Report (Ubuntu 22.04)
+--------------------------------------------------
+Hostname: my-server-01
+Uptime: 2 days, 4 hours, 15 minutes
+--------------------------------------------------
+CPU Usage: 5% (OK)
+  Load Avg (1/5/15): 0.15 / 0.22 / 0.30
+RAM Usage: 65% (WARNING)
+  Total: 16 GB, Used: 10.4 GB, Free: 5.6 GB
+Disk Usage (/): 78% (OK)
+  Total: 250 GB, Used: 195 GB, Free: 55 GB
+--------------------------------------------------
 ```
 
-**Options:**
+### 📦 `backup-manager.sh` - Backup Management
 
-*   `-a, --age DAYS`: Set the retention period in days (default: 30).
-*   `-k, --keep COUNT`: Specify the number of most recent files to keep (default: 10).
-*   `--dry-run`: Execute a dry run to see what would be deleted without making actual changes.
-*   `-h, --help`: Display the usage information and available options.
+A powerful script for creating, rotating, and restoring backups.
 
-**Example:**
+| Capability | Implementation Details |
+| :--- | :--- |
+| **Backup Creation** | Creates compressed `tar.gz` archives from specified sources. |
+| **Exclusions** | Supports a list of excluded files/folders (e.g., `.git`, `node_modules`). |
+| **Retention** | Automatically deletes old backups based on a configurable retention period (`RETENTION_DAYS`). |
+| **Inspection** | Allows viewing archive contents without full restoration (`--inspect`, `--extract-view`). |
+| **Space Check** | Estimates backup size and checks for sufficient free space before starting. |
+
+#### Usage and Commands
+
+| Option | Description | Example |
+| :--- | :--- | :--- |
+| `-c`, `--create` | Creates a new backup. Accepts sources as arguments. | `./backup-manager.sh -c ~/Documents ~/Projects` |
+| `-l`, `--list` | Lists existing backups in the backup directory. | `./backup-manager.sh -l` |
+| `-r`, `--restore FILE` | Restores from the specified backup file. | `./backup-manager.sh -r /tmp/backups/backup_...tar.gz` |
+| `-d`, `--dir DIR` | Sets the backup directory. | `./backup-manager.sh -c -d /mnt/external/backups` |
+| `--retention DAYS` | Sets the retention period in days (default: 30). | `./backup-manager.sh --clean --retention 7` |
+| `--clean` | Cleans old backups based on the retention policy. | `./backup-manager.sh --clean` |
+| `--config` | Shows the current configuration. | `./backup-manager.sh --config` |
+| `--save-config` | Saves the current configuration to file. | `./backup-manager.sh --save-config` |
+| `-i`, `--inspect FILE` | Shows contents of the backup file (first 50 files). | `./backup-manager.sh -i /path/to/backup.tar.gz` |
+| `--extract-view FILE` | Extracts and views backup contents in a temporary directory. | `./backup-manager.sh --extract-view /path/to/backup.tar.gz` |
+
+#### Example Output (Create and Clean)
 
 ```bash
-bash log-cleaner.sh --dry-run
-bash log-cleaner.sh --age 7 --keep 5
+$ ./backup-manager.sh -c /etc/nginx --clean --retention 7
+[2025-10-25 10:25:00] Starting Backup...
+  Source: /etc/nginx
+  Destination: /var/backups/nginx_20251025_102500.tar.gz
+  Size: 1.2 MB
+  Status: SUCCESS
+[2025-10-25 10:25:05] Starting Retention Cleanup...
+  Policy: Keep backups newer than 7 days.
+  Found 5 old backups to delete.
+  Deleted: backup_20251015_080000.tar.gz (1.1 MB)
+  Cleanup Status: SUCCESS
 ```
 
-## 🔮 Future Scripts (Under Development)
+### 🧹 `log-cleaner.sh` - Log Cleanup and Rotation
 
-### 📡 `telegram-ping-monitor.sh` - Telegram Ping Monitor (Coming Soon)
+A script for automatic log file cleanup and rotation based on defined policies.
 
-This upcoming script will provide continuous monitoring of network connectivity to a specified host. Upon detecting a ping failure, it will automatically dispatch an alert message to a configured Telegram chat, ensuring prompt notification of network disruptions. This script will be essential for proactive monitoring of critical services and infrastructure.
+| Capability | Implementation Details |
+| :--- | :--- |
+| **Cleanup by Age** | Deletes files matching patterns (`*.log`, `*.tmp`) that are older than a specified number of days (`RETENTION_DAYS`). |
+| **Rotation by Count** | Deletes the oldest files, keeping a specified number of the latest files (`KEEP_LAST_FILES`). |
+| **Dry Run Mode** | Supports a `--dry-run` mode to check actions without actual deletion. |
+| **Reporting** | Outputs and logs the number of deleted/rotated files. |
 
-**Key Features (Planned):**
+#### Usage and Commands
 
-**Continuous Host Monitoring**: This script will periodically ping a user-defined target host (e.g., `8.8.8.8`).
-**Telegram Notifications**: It will send instant alerts to a specified Telegram chat upon detecting connectivity issues.
-**Configurable Parameters**: It will allow easy setup of the target host, Telegram Bot Token, and Chat ID.
-**Failure Detection**: It will identify and report network outages based on ping response.
-**Cross-Platform Compatibility**: This script is designed for use across various Linux distributions.
+| Option | Description | Example |
+| :--- | :--- | :--- |
+| (None) | Runs the cleanup and rotation with default settings (age 30 days, keep last 10). | `./log-cleaner.sh` |
+| `-a`, `--age DAYS` | Sets the retention age in days. | `./log-cleaner.sh --age 7` |
+| `-k`, `--keep COUNT` | Sets the number of latest files to keep for rotation. | `./log-cleaner.sh --keep 5` |
+| `--dry-run` | Shows what would be deleted without performing the action. | `./log-cleaner.sh --dry-run` |
+| `-h`, `--help` | Shows the help message. | `./log-cleaner.sh -h` |
 
-**Usage (Planned):**
+#### Example Output (Dry Run)
 
 ```bash
-bash telegram-ping-monitor.sh
+$ ./log-cleaner.sh --dry-run -a 30
+[2025-10-25 10:30:00] Starting Log Cleanup (Dry Run)...
+  Target Directory: /var/log/
+  Retention Age: 30 days
+  Files to be deleted (Older than 30 days):
+    - /var/log/nginx/access.log.2025-09-01.gz
+    - /var/log/syslog.1.gz
+  Total files to be deleted: 2
+  Total space to be recovered: 150 MB
+  No changes were made (Dry Run mode).
 ```
 
-**Configuration (Planned):**
+---
 
-Users will need to provide their Telegram Bot Token and Chat ID to enable notifications.
+## 🆕 Future Innovations and Roadmap
 
-**Status:** *This script is currently under development. Details and implementation will be provided soon.*
+In addition to the completed modernization, the project has a clear development plan aimed at improving usability and expanding functionality.
 
-### 💾 `disk-usage-alert.sh` - Disk Space Monitoring and Alerting (Coming Soon)
+### 🎯 Update Plans for All Scripts
 
-This forthcoming script will proactively monitor disk space utilization on your system. It will be configured to check specified partitions and trigger alerts if the usage surpasses a predefined threshold. This is crucial for preventing system instability and ensuring continuous operation due to full disks.
+| Area | Description |
+| :--- | :--- |
+| **Unified Telegram Configuration** | Transition to a single configuration file for all scripts to avoid duplicating `BOT_TOKEN` and `CHAT_ID`. |
+| **Extended Logging** | Implementation of structured logging in **JSON** format to simplify integration with external systems (e.g., ELK Stack or Grafana). |
+| **REST API** | Development of a simple REST API for integration with other systems and remote script management. |
 
-**Key Features (Planned):**
+### 📈 Development Roadmap
 
-**Disk Space Monitoring**: This script will regularly check the disk usage of specified file systems.
-**Threshold-Based Alerts**: It will send notifications when disk usage exceeds a configurable percentage.
-**Customizable Targets**: It will allow the selection of specific disks or partitions to monitor.
-**Notification Integration**: Future integration with alerting systems (e.g., Telegram, email) for critical warnings is planned.
-**Cross-Platform Compatibility**: This script is designed for use across various Linux distributions.
+| Version | Focus | Status |
+| :--- | :--- | :--- |
+| **v1.0** | Initial version (3 scripts with Telegram, 4 without) | Completed |
+| **v1.1** | **Telegram Integration** for the remaining 4 scripts. Improved cross-platform compatibility. | Planned (In Development) |
+| **v1.2** | Web Interface and REST API. Unified Telegram configuration. | Planned (Future) |
+| **v2.0** | Full refactoring with plugin support and modular architecture. | Planned |
 
-**Usage (Planned):**
+### 💡 Additional Capabilities (Perspective)
 
-```bash
-bash disk-usage-alert.sh
-```
+*   **Web Dashboard** for real-time status and metrics viewing.
+*   **Graphs and Metrics** through Grafana integration.
+*   **SMS Notifications** as a fallback alert channel.
+*   **Voice Alerts** for critical failures.
+*   **Automated Actions** (e.g., service restart) upon problem detection.
 
-**Configuration (Planned):**
+All scripts maintain **cross-platform compatibility** and **backward compatibility** for current features.
 
-Users will be able to set the monitoring threshold and target partitions.
-
-**Status:** *This script is currently under development. Details and implementation will be provided soon.*
-
-### 💚 `service-health-check.sh` - Service Health and Status Monitor (Coming Soon)
-
-This upcoming script will be designed to monitor the operational status of critical system services. It will periodically check if specified services are running and respond appropriately if a service is found to be down or unhealthy. This tool will be invaluable for maintaining system stability and ensuring the continuous availability of essential applications.
-
-**Key Features (Planned):**
-
-**Service Monitoring**: This script will check the status of configured system services (e.g., Apache, Nginx, Docker).
-**Automated Actions**: It will have the ability to restart services or trigger alerts upon detecting a failure.
-**Configurable Services**: It will allow users to easily add or remove services to be monitored.
-**Notification Integration**: Future integration with various alerting mechanisms (e.g., Telegram, email) is planned.
-**Cross-Platform Compatibility**: This script is designed for use across various Linux distributions.
-
-**Usage (Planned):**
-
-```bash
-bash service-health-check.sh
-```
-
-**Configuration (Planned):**
-
-Users will define the services to monitor and the desired actions upon failure.
-
-**Status:** *This script is currently under development. Details and implementation will be provided soon.*
-
-## 🤝 Contribution
-
-Contributions are welcome! If you have ideas for new scripts, improvements to existing ones, or bug fixes, please feel free to open an issue or submit a pull request.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the `LICENSE` file for details.
-
+---
 ## 🧰 Maintainer
 
 **Artem Rivnyi** — Junior Technical Support / DevOps Enthusiast
