@@ -7,8 +7,20 @@
 *   [✨ Overview](#-overview)
 *   [📂 Project Structure](#-project-structure)
 *   [🚀 Current Script Status](#-current-script-status)
+    *   [✅ Scripts with Telegram Integration (v1.0)](#-scripts-with-telegram-integration-v10)
+    *   [🔄 Planned Telegram Integration (v1.1)](#-planned-telegram-integration-v11)
 *   [🎯 Detailed Description and Capabilities](#-detailed-description-and-capabilities)
+    *   [📡 `telegram-ping-monitor.sh` - Host Availability Monitoring](#-telegram-ping-monitor-sh---host-availability-monitoring)
+    *   [💾 `disk-usage-alert.sh` - Disk Space Monitoring](#-disk-usage-alert-sh---disk-space-monitoring)
+    *   [💚 `service-health-check.sh` - System Service Monitoring](#-service-health-check-sh---system-service-monitoring)
+    *   [🌐 `internet-check.sh` - Comprehensive Internet Connectivity Check](#-internet-check-sh---comprehensive-internet-connectivity-check)
+    *   [🖥️ `system-monitor.sh` - System Resource Monitoring](#-system-monitor-sh---system-resource-monitoring)
+    *   [📦 `backup-manager.sh` - Backup Management](#-backup-manager-sh---backup-management)
+    *   [🧹 `log-cleaner.sh` - Log Cleanup and Rotation](#-log-cleaner-sh---log-cleanup-and-rotation)
 *   [🆕 Future Innovations and Roadmap](#-future-innovations-and-roadmap)
+    *   [🎯 Update Plans for All Scripts](#-update-plans-for-all-scripts)
+    *   [📈 Development Roadmap](#-development-roadmap)
+    *   [💡 Additional Capabilities (Perspective)](#-additional-capabilities-perspective)
 
 ---
 
