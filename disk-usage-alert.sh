@@ -28,6 +28,7 @@ load_config() {
         log_message "Configuration loaded from $CONFIG_FILE"
     else
         # Set defaults
+        ALERT_METHOD="console"  # console, telegram, both
         TELEGRAM_BOT_TOKEN=""
         TELEGRAM_CHAT_ID=""
         WARNING_THRESHOLD=80
@@ -42,6 +43,7 @@ load_config() {
 save_config() {
     cat > "$CONFIG_FILE" << EOF
 # Disk Usage Alert Configuration
+ALERT_METHOD="$ALERT_METHOD"
 TELEGRAM_BOT_TOKEN="$TELEGRAM_BOT_TOKEN"
 TELEGRAM_CHAT_ID="$TELEGRAM_CHAT_ID"
 WARNING_THRESHOLD=$WARNING_THRESHOLD
@@ -83,6 +85,50 @@ send_telegram_message() {
         log_message "ERROR: Failed to send Telegram notification"
         return 1
     fi
+}
+
+# Send console alert
+send_console_alert() {
+    local message="$1"
+    local severity="$2"
+    
+    case $severity in
+        "CRITICAL")
+            echo -e "${RED}🚨 CRITICAL ALERT: $message${NC}" >&2
+            ;;
+        "WARNING")
+            echo -e "${YELLOW}⚠️ WARNING: $message${NC}" >&2
+            ;;
+        *)
+            echo -e "${CYAN}ℹ️ INFO: $message${NC}" >&2
+            ;;
+    esac
+    
+    # Also log the alert
+    log_message "Console alert ($severity): $message"
+}
+
+# Send alert based on configured method
+send_alert() {
+    local message="$1"
+    local severity="$2"
+    
+    case $ALERT_METHOD in
+        "telegram")
+            if [ "$severity" = "CRITICAL" ] || [ "$severity" = "WARNING" ]; then
+                send_telegram_message "$severity: $message" &
+            fi
+            ;;
+        "both")
+            send_console_alert "$message" "$severity"
+            if [ "$severity" = "CRITICAL" ] || [ "$severity" = "WARNING" ]; then
+                send_telegram_message "$severity: $message" &
+            fi
+            ;;
+        "console"|*)
+            send_console_alert "$message" "$severity"
+            ;;
+    esac
 }
 
 # Get disk usage using PowerShell (works best on Windows)
@@ -166,7 +212,7 @@ parse_disk_usage() {
 # Check disk usage for all monitored mounts
 check_disk_usage() {
     local current_time=$(date '+%Y-%m-%d %H:%M:%S')
-    local alert_message=""
+    local alert_messages=()
     local alert_triggered=false
     
     echo -e "${CYAN}Disk Usage Check - $current_time${NC}"
@@ -205,14 +251,8 @@ check_disk_usage() {
             local current_time_epoch=$(date +%s)
             
             if [ $((current_time_epoch - last_alert_time)) -ge $ALERT_COOLDOWN ]; then
-                if [ -z "$alert_message" ]; then
-                    alert_message="DISK SPACE ALERT - $current_time"
-                fi
-                
-                alert_message="$alert_message
-
-$status - $mount_point
-Usage: $use_percent%"
+                local alert_msg="$status - $mount_point is ${use_percent}% full (Threshold: $([ "$status" = "CRITICAL" ] && echo $CRITICAL_THRESHOLD || echo $WARNING_THRESHOLD)%)"
+                alert_messages+=("$alert_msg")
                 
                 LAST_ALERT_TIME[$mount_point]=$current_time_epoch
                 alert_triggered=true
@@ -221,10 +261,21 @@ Usage: $use_percent%"
     done
     
     # Send alert if needed
-    if [ "$alert_triggered" = true ] && [ -n "$alert_message" ]; then
-        send_telegram_message "$alert_message" &
-        log_message "Disk usage alert sent: $alert_message"
-        echo -e "${RED}ALERT SENT: $alert_message${NC}"
+    if [ "$alert_triggered" = true ] && [ ${#alert_messages[@]} -gt 0 ]; then
+        local full_message="DISK SPACE ALERT - $current_time"
+        for msg in "${alert_messages[@]}"; do
+            full_message="$full_message\n$msg"
+        done
+        
+        # Determine severity for alert (use highest severity)
+        local severity="WARNING"
+        if [[ "${alert_messages[*]}" =~ "CRITICAL" ]]; then
+            severity="CRITICAL"
+        fi
+        
+        send_alert "$full_message" "$severity"
+        log_message "Disk usage alert sent via $ALERT_METHOD"
+        echo -e "${RED}ALERT SENT via $ALERT_METHOD${NC}"
     fi
     
     save_state
@@ -254,25 +305,44 @@ configure_interactive() {
     echo -e "${BLUE}Disk Usage Alert Configuration${NC}"
     echo "===================================="
     
-    # Telegram Bot Token
-    read -p "Enter Telegram Bot Token: " token
-    if [ -n "$token" ]; then
-        TELEGRAM_BOT_TOKEN="$token"
+    # Alert method
+    echo -e "\n${YELLOW}Select alert method:${NC}"
+    echo "1) Console only (alerts shown in terminal)"
+    echo "2) Telegram only"
+    echo "3) Both console and Telegram"
+    read -p "Choose option [1-3] (default: 1): " alert_choice
+    
+    case $alert_choice in
+        1) ALERT_METHOD="console" ;;
+        2) ALERT_METHOD="telegram" ;;
+        3) ALERT_METHOD="both" ;;
+        *) ALERT_METHOD="console" ;;
+    esac
+    
+    # Telegram configuration only if needed
+    if [ "$ALERT_METHOD" = "telegram" ] || [ "$ALERT_METHOD" = "both" ]; then
+        echo -e "\n${YELLOW}Telegram Configuration:${NC}"
+        read -p "Enter Telegram Bot Token: " token
+        if [ -n "$token" ]; then
+            TELEGRAM_BOT_TOKEN="$token"
+        fi
+        
+        read -p "Enter Telegram Chat ID: " chat_id
+        if [ -n "$chat_id" ]; then
+            TELEGRAM_CHAT_ID="$chat_id"
+        fi
+    else
+        TELEGRAM_BOT_TOKEN=""
+        TELEGRAM_CHAT_ID=""
     fi
     
-    # Telegram Chat ID
-    read -p "Enter Telegram Chat ID: " chat_id
-    if [ -n "$chat_id" ]; then
-        TELEGRAM_CHAT_ID="$chat_id"
-    fi
-    
-    # Warning threshold
+    # Thresholds
+    echo -e "\n${YELLOW}Alert Thresholds:${NC}"
     read -p "Warning threshold (%) [${WARNING_THRESHOLD}]: " warning_threshold
     if [ -n "$warning_threshold" ]; then
         WARNING_THRESHOLD=$warning_threshold
     fi
     
-    # Critical threshold
     read -p "Critical threshold (%) [${CRITICAL_THRESHOLD}]: " critical_threshold
     if [ -n "$critical_threshold" ]; then
         CRITICAL_THRESHOLD=$critical_threshold
@@ -331,16 +401,31 @@ show_disk_usage() {
         
         echo -e "${status_color}$mount_point: ${usage_percent}% used - $status${NC}"
     done
+    
+    echo -e "\n${CYAN}Alert Method: $ALERT_METHOD${NC}"
+    echo -e "${CYAN}Warning Threshold: ${WARNING_THRESHOLD}%${NC}"
+    echo -e "${CYAN}Critical Threshold: ${CRITICAL_THRESHOLD}%${NC}"
 }
 
 # Start monitoring
 start_monitoring() {
     echo -e "${GREEN}Starting Disk Usage Monitor${NC}"
+    echo -e "Alert method: ${YELLOW}$ALERT_METHOD${NC}"
     echo -e "Monitoring mounts: ${YELLOW}${MONITOR_MOUNTS[*]}${NC}"
     echo -e "Warning threshold: ${YELLOW}${WARNING_THRESHOLD}%${NC}"
     echo -e "Critical threshold: ${YELLOW}${CRITICAL_THRESHOLD}%${NC}"
     echo -e "Check interval: ${YELLOW}${CHECK_INTERVAL}s${NC}"
-    echo -e "Press Ctrl+C to stop\n"
+    
+    if [ "$ALERT_METHOD" = "telegram" ] || [ "$ALERT_METHOD" = "both" ]; then
+        if [ -z "$TELEGRAM_BOT_TOKEN" ] || [ -z "$TELEGRAM_CHAT_ID" ]; then
+            echo -e "${RED}Warning: Telegram configured but bot token or chat ID not set${NC}"
+            echo -e "${YELLOW}Run '$0 config' to configure Telegram${NC}"
+        else
+            echo -e "${GREEN}Telegram notifications enabled${NC}"
+        fi
+    fi
+    
+    echo -e "\nPress Ctrl+C to stop\n"
     
     load_state
     
@@ -359,15 +444,40 @@ test_notification() {
 Disk Usage Monitor is working correctly!
 Time: $current_time
 
+Alert Method: $ALERT_METHOD
 Monitored mounts: ${MONITOR_MOUNTS[*]}
 Warning threshold: ${WARNING_THRESHOLD}%
 Critical threshold: ${CRITICAL_THRESHOLD}%"
 
-    if send_telegram_message "$test_message"; then
-        echo -e "${GREEN}Test notification sent successfully${NC}"
-    else
-        echo -e "${RED}Failed to send test notification${NC}"
-    fi
+    case $ALERT_METHOD in
+        "telegram")
+            if [ -z "$TELEGRAM_BOT_TOKEN" ] || [ -z "$TELEGRAM_CHAT_ID" ]; then
+                echo -e "${RED}Telegram is not configured. Please run 'config' first.${NC}"
+                return 1
+            fi
+            if send_telegram_message "$test_message"; then
+                echo -e "${GREEN}Test Telegram notification sent successfully${NC}"
+            else
+                echo -e "${RED}Failed to send test Telegram notification${NC}"
+            fi
+            ;;
+        "both")
+            send_console_alert "Test console notification - System is working correctly" "INFO"
+            if [ -n "$TELEGRAM_BOT_TOKEN" ] && [ -n "$TELEGRAM_CHAT_ID" ]; then
+                if send_telegram_message "$test_message"; then
+                    echo -e "${GREEN}Test Telegram notification sent successfully${NC}"
+                else
+                    echo -e "${RED}Failed to send test Telegram notification${NC}"
+                fi
+            else
+                echo -e "${YELLOW}Telegram not configured, only console test was performed${NC}"
+            fi
+            ;;
+        "console"|*)
+            send_console_alert "Test console notification - System is working correctly" "INFO"
+            echo -e "${GREEN}Test console notification completed${NC}"
+            ;;
+    esac
 }
 
 # Show logs
@@ -380,26 +490,51 @@ show_logs() {
     fi
 }
 
+# Show current configuration
+show_config() {
+    echo -e "${BLUE}Current Configuration:${NC}"
+    echo "======================"
+    echo -e "Alert Method: ${CYAN}$ALERT_METHOD${NC}"
+    echo -e "Warning Threshold: ${CYAN}${WARNING_THRESHOLD}%${NC}"
+    echo -e "Critical Threshold: ${CYAN}${CRITICAL_THRESHOLD}%${NC}"
+    echo -e "Check Interval: ${CYAN}${CHECK_INTERVAL}s${NC}"
+    echo -e "Monitor Mounts: ${CYAN}${MONITOR_MOUNTS[*]}${NC}"
+    
+    if [ "$ALERT_METHOD" = "telegram" ] || [ "$ALERT_METHOD" = "both" ]; then
+        if [ -n "$TELEGRAM_BOT_TOKEN" ] && [ -n "$TELEGRAM_CHAT_ID" ]; then
+            echo -e "Telegram: ${GREEN}Configured${NC}"
+        else
+            echo -e "Telegram: ${RED}Not configured${NC}"
+        fi
+    fi
+}
+
 # Help message
 show_help() {
     echo -e "${BLUE}Disk Usage Alert Monitor${NC}"
     echo "=========================="
-    echo "A disk space monitoring tool with Telegram alerts"
+    echo "A disk space monitoring tool with multiple alert methods"
     echo ""
     echo "Usage: $0 [command]"
     echo ""
     echo "Commands:"
     echo "  config    - Interactive configuration setup"
     echo "  start     - Start monitoring"
-    echo "  status    - Show current disk usage"
-    echo "  test      - Test Telegram notification"
+    echo "  status    - Show current disk usage and configuration"
+    echo "  test      - Test notifications"
     echo "  log       - Show recent logs"
+    echo "  showcfg   - Show current configuration"
     echo "  help      - Show this help message"
+    echo ""
+    echo "Alert Methods:"
+    echo "  - console: Alerts shown in terminal"
+    echo "  - telegram: Alerts sent via Telegram"
+    echo "  - both: Alerts shown in terminal and sent via Telegram"
     echo ""
     echo "Examples:"
     echo "  $0 config     # Set up monitoring"
     echo "  $0 start      # Start monitoring service"
-    echo "  $0 status     # Check current disk usage"
+    echo "  $0 status     # Check current disk usage and config"
 }
 
 # Main execution
@@ -422,6 +557,9 @@ main() {
             ;;
         "log")
             show_logs
+            ;;
+        "showcfg")
+            show_config
             ;;
         "help")
             show_help
