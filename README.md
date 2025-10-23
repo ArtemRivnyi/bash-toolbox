@@ -390,7 +390,7 @@ All scripts maintain **cross-platform compatibility** and **backward compatibili
 
 **Artem Rivnyi** — Junior Technical Support / DevOps Enthusiast
 
-* **Email:** [artemrivnyi@outlook.com](mailto:artemrivnyi@outlook.com)  
+* 📧 [artemrivnyi@outlook.com](mailto:artemrivnyi@outlook.com)  
 * 🔗 [LinkedIn](https://www.linkedin.com/in/artem-rivnyi/)  
 * 🌐 [Personal Projects](https://personal-page-devops.onrender.com/)  
 * 💻 [GitHub](https://github.com/ArtemRivnyi)
