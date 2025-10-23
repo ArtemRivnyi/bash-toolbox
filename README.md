@@ -53,7 +53,7 @@ The project maintains a simple, flat structure for ease of use and portability.
 | Script | Description | Key Features |
 | :--- | :--- | :--- |
 | `telegram-ping-monitor.sh` | Host availability monitoring. | Notifications on status change (up/down/degraded). Configurable check intervals and spam protection. |
-| `disk-usage-alert.sh` | Disk space monitoring. | Threshold notifications (warning/critical). Supports Windows/Linux/macOS. Uses PowerShell for accuracy on Windows. |
+| `disk-usage-alert.sh` | Disk space monitoring. | **Multiple alert methods** (console/telegram/both). Threshold notifications. Cross-platform support. |
 | `service-health-check.sh` | System service monitoring. | Tracks service status (systemd/init/Windows services). Notifications on failures and recoveries. |
 
 ### ⚙️ Core Scripts (No Telegram Integration in v1.0)
@@ -67,16 +67,16 @@ The project maintains a simple, flat structure for ease of use and portability.
 
 **Note:** The four scripts listed under "Core Scripts" are fully functional but do not include Telegram notification support in the current version. Integration is planned for v1.1.
 
-### 🔄 Planned Telegram Integration (v1.1)
+### 🔄 Planned Alert System Enhancement (v1.1)
 
-The following scripts are planned to be enhanced in **v1.1** to include **full Telegram notification support**:
+The following scripts are planned to be enhanced in **v1.1** to include **flexible alert methods (console, telegram, or both)** similar to `disk-usage-alert.sh`:
 
-| Script | Description | Planned Telegram Feature |
+| Script | Planned Alert Feature |
 | :--- | :--- | :--- |
-| `internet-check.sh` | Comprehensive network check. | Telegram alerts for complete internet loss and speed threshold breaches. |
-| `system-monitor.sh` | CPU, RAM, Disk monitoring. | Telegram alerts for high load (CPU >90%, RAM >90%). |
-| `backup-manager.sh` | Backup creation and management. | Telegram reports on backup success/failure and warnings for low backup space. |
-| `log-cleaner.sh` | Log cleanup and rotation. | Telegram reports on cleanup results and warnings for critically large logs. |
+| `internet-check.sh` | Console/Telegram alerts for internet outages and speed issues. |
+| `system-monitor.sh` | Console/Telegram alerts for high resource usage. |
+| `backup-manager.sh` | Console/Telegram reports on backup operations. |
+| `log-cleaner.sh` | Console/Telegram reports on cleanup results. |
 
 ---
 
@@ -127,6 +127,8 @@ The script monitors the percentage of disk usage for specified mount points and 
 
 | Capability | Implementation Details |
 | :--- | :--- |
+| **Multiple Alert Methods** | Supports **console**, **telegram**, or **both** notification methods. Configurable via `ALERT_METHOD` setting. |
+| **Console Alerts** | Color-coded terminal notifications with emojis for different severity levels. |
 | **Threshold Notifications** | Supports `WARNING` (default 80%) and `CRITICAL` (default 90%) levels. |
 | **Cross-Platform** | Uses `df` on Linux/macOS, and `PowerShell` on Windows for reliable disk data retrieval (e.g., `C:`). |
 | **Configuration** | Configurable via interactive mode, including `WARNING_THRESHOLD`, `CRITICAL_THRESHOLD`, and the list of monitored mount points. |
@@ -136,30 +138,25 @@ The script monitors the percentage of disk usage for specified mount points and 
 
 | Command | Description | Example |
 | :--- | :--- | :--- |
-| `config` | Interactive configuration setup (Telegram tokens, thresholds, mounts). | `./disk-usage-alert.sh config` |
+| `config` | Interactive configuration setup (Telegram tokens, thresholds, mounts). | `./disk-usage-alert.sh config` |},{find:
 | `start` | Starts the continuous monitoring loop. | `./disk-usage-alert.sh start` |
 | `status` | Shows the current disk usage for monitored mounts. | `./disk-usage-alert.sh status` |
 | `test` | Sends a test Telegram notification. | `./disk-usage-alert.sh test` |
 | `log` | Shows the recent log file entries. | `./disk-usage-alert.sh log` |
+| `showcfg` | Shows current configuration including alert method. | `./disk-usage-alert.sh showcfg` |
 
 #### Example Output (Status)
 
 ```bash
 $ ./disk-usage-alert.sh status
-[2025-10-25 10:05:00] Disk Usage Report
---------------------------------------------------
-Filesystem: /dev/sda1 (Mounted on /)
-  Usage: 78% (Status: OK)
-  Threshold: WARNING (80%), CRITICAL (90%)
-Filesystem: /dev/sdb1 (Mounted on /var/log)
-  Usage: 85% (Status: WARNING)
-  Threshold: WARNING (80%), CRITICAL (90%)
-  Last Alert: WARNING (Sent to Telegram)
-Filesystem: C: (Mounted on /mnt/c) - Windows
-  Usage: 92% (Status: CRITICAL)
-  Threshold: WARNING (80%), CRITICAL (90%)
-  Last Alert: CRITICAL (Sent to Telegram)
---------------------------------------------------
+Current Disk Usage
+===================
+/: 45% used - NORMAL
+/mnt/data: 85% used - WARNING
+
+Alert Method: console
+Warning Threshold: 80%
+Critical Threshold: 90%
 ```
 
 ### 💚 `service-health-check.sh` - System Service Monitoring
@@ -385,12 +382,4 @@ In addition to the completed modernization, the project has a clear development 
 All scripts maintain **cross-platform compatibility** and **backward compatibility** for current features.
 
 ---
-
-## 🧰 Maintainer
-
-**Artem Rivnyi** — Junior Technical Support / DevOps Enthusiast
-
-* 📧 [artemrivnyi@outlook.com](mailto:artemrivnyi@outlook.com)  
-* 🔗 [LinkedIn](https://www.linkedin.com/in/artem-rivnyi/)  
-* 🌐 [Personal Projects](https://personal-page-devops.onrender.com/)  
-* 💻 [GitHub](https://github.com/ArtemRivnyi)
+*Author: Manus AI, based on provided data.*
