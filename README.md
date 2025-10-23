@@ -8,6 +8,7 @@
 *   [📂 Project Structure](#-project-structure)
 *   [🚀 Current Script Status](#-current-script-status)
     *   [✅ Scripts with Telegram Integration (v1.0)](#-scripts-with-telegram-integration-v10)
+    *   [⚙️ Core Scripts (No Telegram Integration in v1.0)](#-core-scripts-no-telegram-integration-in-v10)
     *   [🔄 Planned Telegram Integration (v1.1)](#-planned-telegram-integration-v11)
 *   [🎯 Detailed Description and Capabilities](#-detailed-description-and-capabilities)
     *   [📡 `telegram-ping-monitor.sh` - Host Availability Monitoring](#-telegram-ping-monitor-sh---host-availability-monitoring)
@@ -54,12 +55,17 @@ The project maintains a simple, flat structure for ease of use and portability.
 | `telegram-ping-monitor.sh` | Host availability monitoring. | Notifications on status change (up/down/degraded). Configurable check intervals and spam protection. |
 | `disk-usage-alert.sh` | Disk space monitoring. | Threshold notifications (warning/critical). Supports Windows/Linux/macOS. Uses PowerShell for accuracy on Windows. |
 | `service-health-check.sh` | System service monitoring. | Tracks service status (systemd/init/Windows services). Notifications on failures and recoveries. |
+
+### ⚙️ Core Scripts (No Telegram Integration in v1.0)
+
+| Script | Description | Key Features |
+| :--- | :--- | :--- |
 | `internet-check.sh` | Comprehensive network check. | Multi-stage diagnostics (Ping, DNS, HTTP/HTTPS, Speed Test). |
 | `system-monitor.sh` | CPU, RAM, Disk monitoring. | Cross-platform metric collection with color-coded thresholds. |
 | `backup-manager.sh` | Backup creation and management. | Retention, inspection, and restoration features. |
 | `log-cleaner.sh` | Log cleanup and rotation. | Cleanup by age, rotation by count, and dry-run mode. |
-| :--- | :--- | :--- |
-| **Note:** Only the first three scripts (`telegram-ping-monitor.sh`, `disk-usage-alert.sh`, `service-health-check.sh`) currently support Telegram notifications. Integration for the remaining four is planned for v1.1.
+
+**Note:** The four scripts listed under "Core Scripts" are fully functional but do not include Telegram notification support in the current version. Integration is planned for v1.1.
 
 ### 🔄 Planned Telegram Integration (v1.1)
 
@@ -379,6 +385,7 @@ In addition to the completed modernization, the project has a clear development 
 All scripts maintain **cross-platform compatibility** and **backward compatibility** for current features.
 
 ---
+
 ## 🧰 Maintainer
 
 **Artem Rivnyi** — Junior Technical Support / DevOps Enthusiast
