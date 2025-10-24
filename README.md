@@ -23,6 +23,7 @@ Collection of lightweight, cross-platform **Bash scripts** for developers, sysad
     *   [🧹 log-cleaner.sh](#-log-cleanersh---log-cleanup-and-rotation)
 *   [💡 Notification Philosophy and Best Practices](#-notification-philosophy-and-best-practices)
 *   [🆕 Future Innovations and Roadmap](#-future-innovations-and-roadmap)
+*   [🤝 Contributing](#-contributing)
 *   [🧰 Maintainer](#-maintainer)
 
 ---
@@ -518,6 +519,10 @@ The following features are planned for future releases. Items marked with `✅` 
 | **P3 (v2.0)** | Docker compose for deployment | ❌ PENDING | For easy, containerized deployment. |
 
 ---
+
+## 🤝 Contributing
+
+Contributions are welcome! If you have a useful Bash script or an improvement, feel free to submit a pull request.
 
 ## 🧰 Maintainer
 
