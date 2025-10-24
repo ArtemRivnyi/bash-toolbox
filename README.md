@@ -1,11 +1,15 @@
 # ⚙️ Bash Toolkit: Essential System Administration Scripts
 
-**Bash Toolkit** is a collection of cross-platform Bash scripts designed to automate key tasks in system administration, monitoring, and diagnostics. The scripts feature minimal dependencies, high compatibility (Linux, macOS, Windows via Git Bash/PowerShell), and are now integrated with smart Telegram notifications for critical alerts.
+[![Shell](https://img.shields.io/badge/Shell_Script-121011?style=for-the-badge&logo=gnu-bash&logoColor=white)](https://www.gnu.org/software/bash/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+Collection of lightweight, cross-platform **Bash scripts** for developers, sysadmins, and DevOps. This toolbox is designed to **automate routine system monitoring, service checks, backups, log cleanup, and network tasks** with minimal dependencies, making it ideal for quick deployment in any Linux or macOS environment.
 
 ## 📋 Table of Contents
 
 *   [✨ Overview](#-overview)
 *   [📂 Project Structure](#-project-structure)
+*   [🚀 Quick Start](#-quick-start)
 *   [🚀 Current Script Status](#-current-script-status)
     *   [✅ Scripts with Smart Telegram Integration](#-scripts-with-smart-telegram-integration)
     *   [⚙️ Core Utility Scripts](#️-core-utility-scripts)
@@ -53,6 +57,16 @@ The project maintains a simple, flat structure for ease of use and portability.
 ├── telegram-ping-monitor.sh      # Host availability monitoring
 ├── .gitignore                    # Git ignore patterns
 └── README.md                     # This file
+```
+## 🚀 Quick Start
+
+To use any script, simply clone the repository and make the script executable:
+
+```bash
+git clone https://github.com/ArtemRivnyi/bash-toolbox.git
+cd bash-toolbox
+chmod +x <script_name>.sh
+./<script_name>.sh
 ```
 
 ---
