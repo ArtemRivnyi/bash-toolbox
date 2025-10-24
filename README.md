@@ -32,13 +32,14 @@ Collection of lightweight, cross-platform **Bash scripts** for developers, sysad
 This toolkit provides seven powerful scripts for maintaining the health and stability of your infrastructure. All scripts are designed with cross-platform compatibility in mind (Linux, macOS, Windows via Git Bash) and use a unified approach to configuration for alerts where applicable.
 
 **Key Features:**
-- 🌍 Cross-platform compatibility (Linux, macOS, Windows)
-- 📱 **Smart Telegram notification support** for critical and recovery events
-- 🚨 **Severity Levels:** Alerts classified as CRITICAL, WARNING, or RECOVERY
-- 🎨 Color-coded console output for better readability
-- 📊 Comprehensive logging for all operations
-- ⚡ Minimal dependencies (bash, tar, gzip, curl/wget)
-- 🔧 Easy configuration via interactive setup or config files
+*   🌍 **Cross-Platform**: Works seamlessly on Linux, macOS, and Windows.
+*   ⚡ **Minimal Dependencies**: Relies primarily on standard utilities (bash, tar, gzip, curl, wget, grep, awk).
+*   📱 **Smart Telegram Notifications**: Support for critical and recovery events with configurable severity levels (CRITICAL, WARNING, RECOVERY).
+*   🎨 **Color-Coded Console Output**: Enhanced readability for easier monitoring.
+*   📊 **Comprehensive Logging**: Detailed logs for all script operations.
+*   🔧 **Easy Configuration**: Set up via an interactive script or by editing configuration files directly.
+*   🤖 **Automation-Focused**: Designed to automate common DevOps tasks, reducing manual effort.
+*   🧩 **Modular Design**: Each script is self-contained and focused on a single task for easy integration into larger workflows.
 
 ---
 
