@@ -20,6 +20,7 @@ Collection of lightweight, cross-platform Bash scripts for developers, sysadmins
 - [💡 Notification Philosophy](#-notification-philosophy)
 - [🆕 Roadmap](#-roadmap)
 - [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
 - [🧰 Maintainer](#-maintainer)
 
 ---
@@ -548,6 +549,12 @@ Contributions are welcome! If you have improvements or useful scripts:
 
 ---
 
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+---
+
 ## 🧰 Maintainer
 
 **Artem Rivnyi**  
@@ -555,21 +562,3 @@ Junior Technical Support / DevOps Enthusiast
 
 - GitHub: [@ArtemRivnyi](https://github.com/ArtemRivnyi)
 - Repository: [bash-toolbox](https://github.com/ArtemRivnyi/bash-toolbox)
-
----
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
----
-
-## 🙏 Acknowledgments
-
-- Thanks to the open-source community for inspiration
-- Built with standard Unix/Linux tools for maximum compatibility
-- Designed with DevOps best practices in mind
-
----
-
-**⭐ If you find this toolbox useful, please consider giving it a star on GitHub!**
