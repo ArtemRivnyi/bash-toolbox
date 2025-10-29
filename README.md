@@ -11,7 +11,6 @@ Collection of lightweight, cross-platform Bash scripts for developers, sysadmins
 ## 📑 Table of Contents
 
 - [✨ Overview](#-overview)
-- [📂 Project Structure](#-project-structure)
 - [🚀 Quick Start](#-quick-start)
 - [🚀 Script Status](#-script-status)
 - [🎯 Detailed Scripts](#-detailed-scripts)
@@ -39,23 +38,6 @@ This toolkit provides seven powerful scripts for maintaining infrastructure heal
 - 🔧 **Easy Configuration**: Interactive setup or direct config file editing
 - 🤖 **Automation-Focused**: Designed for cron jobs and CI/CD pipelines
 - 🧩 **Modular Design**: Self-contained scripts for easy integration
-
----
-
-## 📂 Project Structure
-
-```
-bash-toolbox/
-├── backup-manager.sh          # Backup creation and management
-├── disk-usage-alert.sh        # Disk space monitoring with alerts
-├── internet-check.sh          # Internet connectivity diagnostics
-├── log-cleaner.sh             # Log file cleanup and rotation
-├── service-health-check.sh    # System service monitoring
-├── system-monitor.sh          # CPU/RAM/Disk monitoring
-├── telegram-ping-monitor.sh   # Host availability monitoring
-├── .gitignore                 # Git ignore patterns
-└── README.md                  # This file
-```
 
 ---
 
