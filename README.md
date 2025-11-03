@@ -454,7 +454,7 @@ The project follows a smart, non-spammy alerting approach to ensure notification
 
 The monitoring scripts use a unified, stateful approach to sending alerts, ensuring you only get notified when a state *changes* (e.g., from `UP` to `CRITICAL` or `CRITICAL` to `RECOVERY`).
 
-<img src="https://github.com/user-attachments/assets/0b823aa2-81c6-4817-9333-8a13c6f135b3" alt="Telegram Notification Flow Architecture Diagram" width="300">
+![telegram_flow](./assets/telegram_flow.png)
 
 Why Not All Scripts Have Telegram Integration
 
