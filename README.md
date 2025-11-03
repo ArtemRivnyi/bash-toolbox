@@ -2,27 +2,21 @@
 
 Collection of lightweight, cross-platform Bash scripts for developers, sysadmins, and DevOps. Automate system monitoring, service checks, backups, log cleanup, and network tasks with minimal dependencies. Works on Linux, macOS, and hybrid environments.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Bash](https://img.shields.io/badge/bash-4.0%2B-brightgreen.svg)](https://www.gnu.org/software/bash/)
-[![Platform](https://img.shields.io/badge/platform-linux%20%7C%20macOS-blue.svg)](https://github.com/ArtemRivnyi/bash-toolbox)
-
----
-
 ## 📑 Table of Contents
 
-- [✨ Overview](#-overview)
-- [🚀 Quick Start](#-quick-start)
-- [🚀 Script Status](#-script-status)
-- [🎯 Detailed Scripts](#-detailed-scripts)
-  - [Monitoring Scripts (with Telegram)](#monitoring-scripts-with-telegram)
-  - [Utility Scripts](#utility-scripts)
-- [💡 Notification Philosophy](#-notification-philosophy)
-- [🆕 Roadmap](#-roadmap)
-- [🤝 Contributing](#-contributing)
-- [📄 License](#-license)
-- [🧰 Maintainer](#-maintainer)
-
----
+*   [✨ Overview](#-overview)
+*   [🎯 Use Case Examples](#-use-case-examples-real-world-scenarios)
+*   [🚀 Quick Start](#-quick-start)
+*   [🚀 Script Status](#-script-status)
+*   [🎯 Detailed Scripts](#-detailed-scripts)
+    *   [Monitoring Scripts (with Telegram)](#monitoring-scripts-with-telegram)
+    *   [Utility Scripts](#utility-scripts)
+*   [💡 Notification Philosophy](#-notification-philosophy)
+    *   [Telegram Notification Flow (Architecture)](#telegram-notification-flow-architecture)
+*   [🆕 Roadmap](#-roadmap)
+*   [🤝 Contributing](#-contributing)
+*   [📄 License](#-license)
+*   [🧰 Maintainer](#-maintainer)
 
 ## ✨ Overview
 
@@ -30,22 +24,31 @@ This toolkit provides seven powerful scripts for maintaining infrastructure heal
 
 ### Key Features
 
-- 🌍 **Cross-Platform**: Works on Linux and macOS (Windows support via Git Bash - experimental)
-- ⚡ **Minimal Dependencies**: Uses standard utilities (bash, tar, gzip, curl/wget, grep, awk)
-- 📱 **Smart Telegram Notifications**: Critical, Warning, and Recovery alerts with cooldown protection
-- 🎨 **Color-Coded Output**: Enhanced console readability
-- 📊 **Comprehensive Logging**: Detailed logs for all operations
-- 🔧 **Easy Configuration**: Interactive setup or direct config file editing
-- 🤖 **Automation-Focused**: Designed for cron jobs and CI/CD pipelines
-- 🧩 **Modular Design**: Self-contained scripts for easy integration
+*   🌍 **Cross-Platform**: Works on Linux and macOS (Windows support via Git Bash - experimental)
+*   ⚡ **Minimal Dependencies**: Uses standard utilities (bash, tar, gzip, curl/wget, grep, awk)
+*   📱 **Smart Telegram Notifications**: Critical, Warning, and Recovery alerts with cooldown protection
+*   🎨 **Color-Coded Output**: Enhanced console readability
+*   📊 **Comprehensive Logging**: Detailed logs for all operations
+*   🔧 **Easy Configuration**: Interactive setup or direct config file editing
+*   🤖 **Automation-Focused**: Designed for cron jobs and CI/CD pipelines
+*   🧩 **Modular Design**: Self-contained scripts for easy integration
 
----
+## 🎯 Use Case Examples: Real-World Scenarios
+
+The **Bash Toolbox** is designed to be the lightweight, cross-platform monitoring and maintenance solution for environments where full-scale enterprise monitoring systems are overkill or too resource-intensive.
+
+| Scenario | Ideal For | Scripts Used | Key Benefit |
+| :--- | :--- | :--- | :--- |
+| **Small IT Teams Managing 10-50 Servers** | Startups, small businesses, development teams, or educational labs. | `telegram-ping-monitor.sh`, `disk-usage-alert.sh`, `service-health-check.sh` | **Immediate, low-noise alerting** directly to the team's Telegram channel, ensuring high availability without the complexity of a full-scale monitoring stack. |
+| **Edge Computing & IoT Gateways** | Remote locations, industrial control systems, or low-power devices. | `system-monitor.sh`, `internet-check.sh` | **Minimal resource footprint** and reliance on standard Bash utilities, making it perfect for resource-constrained environments. |
+| **Automated Development & CI/CD Pipelines** | Developers needing pre-deployment checks or post-deployment health verification. | `service-health-check.sh`, `backup-manager.sh` | **Simple integration** into existing CI/CD scripts to ensure services are running and critical data is backed up before and after updates. |
+| **Personal Server & Home Lab Management** | Individual users or hobbyists managing a personal web server, NAS, or media server. | `log-cleaner.sh`, `disk-usage-alert.sh` | **Set-and-forget maintenance** that automatically cleans up logs and prevents disk-full errors, freeing up time for other tasks. |
 
 ## 🚀 Quick Start
 
 ### Installation
 
-```bash
+```shell
 git clone https://github.com/ArtemRivnyi/bash-toolbox.git
 cd bash-toolbox
 chmod +x *.sh
@@ -53,7 +56,7 @@ chmod +x *.sh
 
 ### Usage Example
 
-```bash
+```shell
 # Configure script interactively
 ./telegram-ping-monitor.sh config
 
@@ -64,8 +67,6 @@ chmod +x *.sh
 ./telegram-ping-monitor.sh status
 ```
 
----
-
 ## 🚀 Script Status
 
 ### Monitoring Scripts (with Telegram)
@@ -73,7 +74,7 @@ chmod +x *.sh
 These scripts support full Telegram integration with severity levels (CRITICAL/WARNING/RECOVERY) and alert cooldowns.
 
 | Script | Description | Alert Methods | Features |
-|--------|-------------|---------------|----------|
+| --- | --- | --- | --- |
 | `telegram-ping-monitor.sh` | Host availability monitoring | Telegram only | Multi-host, status transitions, cooldown |
 | `disk-usage-alert.sh` | Disk space monitoring | Console / Telegram / Both | Dual thresholds, cross-platform |
 | `service-health-check.sh` | Service health monitoring | Telegram only | Multi-init support (systemd/launchctl) |
@@ -85,17 +86,13 @@ These scripts support full Telegram integration with severity levels (CRITICAL/W
 Diagnostic and maintenance tools without real-time Telegram integration (following notification philosophy).
 
 | Script | Description | Features |
-|--------|-------------|----------|
+| --- | --- | --- |
 | `backup-manager.sh` | Backup management | Compression, retention, inspection, restoration |
 | `log-cleaner.sh` | Log cleanup & rotation | Age-based cleanup, count-based rotation, dry-run |
-
----
 
 ## 🎯 Detailed Scripts
 
 ### Monitoring Scripts (with Telegram)
-
----
 
 #### 📡 telegram-ping-monitor.sh
 
@@ -104,7 +101,7 @@ Diagnostic and maintenance tools without real-time Telegram integration (followi
 ##### Features
 
 | Feature | Details |
-|---------|---------|
+| --- | --- |
 | Status Detection | Tracks: up, degraded (packet loss), down |
 | Multi-Host | Monitors multiple hosts from configurable list |
 | Smart Alerts | Only sends notifications on status changes |
@@ -114,7 +111,7 @@ Diagnostic and maintenance tools without real-time Telegram integration (followi
 
 ##### Commands
 
-```bash
+```shell
 ./telegram-ping-monitor.sh config   # Interactive configuration
 ./telegram-ping-monitor.sh start    # Start monitoring loop
 ./telegram-ping-monitor.sh status   # Show current host status
@@ -127,7 +124,7 @@ Diagnostic and maintenance tools without real-time Telegram integration (followi
 
 **Location**: `~/.telegram-ping-monitor.conf`
 
-```bash
+```shell
 TELEGRAM_BOT_TOKEN="your_bot_token_here"
 TELEGRAM_CHAT_ID="your_chat_id_here"
 MONITOR_HOSTS=(8.8.8.8 1.1.1.1 google.com)
@@ -140,22 +137,20 @@ PING_COUNT=3             # Number of ping packets per check
 ##### Example Alerts
 
 **Host Down:**
-```
-🚨 CRITICAL - Host Down
-Host: google.com
-Time: 2025-10-24 14:30:00
-Previous state: up
-```
+
+    🚨 CRITICAL - Host Down
+    Host: google.com
+    Time: 2025-10-24 14:30:00
+    Previous state: up
+    
 
 **Recovery:**
-```
-✅ RECOVERY - Host Back Online
-Host: google.com
-Time: 2025-10-24 14:35:00
-Previous state: down
-```
 
----
+    ✅ RECOVERY - Host Back Online
+    Host: google.com
+    Time: 2025-10-24 14:35:00
+    Previous state: down
+    
 
 #### 💾 disk-usage-alert.sh
 
@@ -163,16 +158,16 @@ Previous state: down
 
 ##### Features
 
-- Flexible alert methods (console, Telegram, or both)
-- Dual thresholds (Warning: 80%, Critical: 90%)
-- Cross-platform support (Linux/macOS/Windows)
-- Color-coded console output (Green/Yellow/Red)
-- Multi-mount support
-- Per-mount cooldown tracking
+*   Flexible alert methods (console, Telegram, or both)
+*   Dual thresholds (Warning: 80%, Critical: 90%)
+*   Cross-platform support (Linux/macOS/Windows)
+*   Color-coded console output (Green/Yellow/Red)
+*   Multi-mount support
+*   Per-mount cooldown tracking
 
 ##### Commands
 
-```bash
+```shell
 ./disk-usage-alert.sh config    # Interactive setup
 ./disk-usage-alert.sh start     # Start monitoring
 ./disk-usage-alert.sh status    # Show current disk usage
@@ -186,7 +181,7 @@ Previous state: down
 
 **Location**: `~/.disk-usage-alert.conf`
 
-```bash
+```shell
 ALERT_METHOD="both"              # console, telegram, or both
 TELEGRAM_BOT_TOKEN="your_token"
 TELEGRAM_CHAT_ID="your_chat_id"
@@ -199,17 +194,14 @@ MONITOR_MOUNTS=(/ /mnt/data)     # Unix: /, Windows: C:
 
 ##### Example Output
 
-```
-Disk Usage Check - 2025-10-24 14:30:00
-======================================
-/: 45% used - NORMAL
-/mnt/data: 85% used - WARNING
-C:: 92% used - 🚨 CRITICAL
-
-🚨 CRITICAL: Disk usage for C: is 92% (threshold: 90%)
-```
-
----
+    Disk Usage Check - 2025-10-24 14:30:00
+    ======================================
+    /: 45% used - NORMAL
+    /mnt/data: 85% used - WARNING
+    C:: 92% used - 🚨 CRITICAL
+    
+    🚨 CRITICAL: Disk usage for C: is 92% (threshold: 90%)
+    
 
 #### 🔧 service-health-check.sh
 
@@ -217,16 +209,16 @@ C:: 92% used - 🚨 CRITICAL
 
 ##### Features
 
-- Multi-init support (systemd, launchctl, Windows sc)
-- Status tracking (running, stopped, unknown)
-- Change-based alerts only
-- Automatic init system detection
-- Persistent state tracking
-- Configurable service list
+*   Multi-init support (systemd, launchctl, Windows sc)
+*   Status tracking (running, stopped, unknown)
+*   Change-based alerts only
+*   Automatic init system detection
+*   Persistent state tracking
+*   Configurable service list
 
 ##### Commands
 
-```bash
+```shell
 ./service-health-check.sh config   # Interactive setup
 ./service-health-check.sh start    # Start monitoring
 ./service-health-check.sh status   # Show service status
@@ -239,7 +231,7 @@ C:: 92% used - 🚨 CRITICAL
 
 **Location**: `~/.service-health-check.conf`
 
-```bash
+```shell
 TELEGRAM_BOT_TOKEN="your_token"
 TELEGRAM_CHAT_ID="your_chat_id"
 CHECK_INTERVAL=60                           # Check every minute
@@ -247,24 +239,22 @@ ALERT_COOLDOWN=300                          # 5-minute cooldown
 MONITOR_SERVICES=(docker nginx ssh mysql)   # Services to monitor
 ```
 
----
-
 #### 🌐 internet-check.sh
 
 **Internet Connectivity Diagnostics** - Multi-stage diagnostics (Ping, DNS, HTTP/HTTPS) with failure and recovery alerts.
 
 ##### Features
 
-- Multi-stage checks (Ping → DNS → HTTP/HTTPS)
-- CRITICAL/WARNING severity levels
-- Configurable alert methods
-- Cooldown protection
-- Cross-platform network commands
-- Persistent state for recovery detection
+*   Multi-stage checks (Ping → DNS → HTTP/HTTPS)
+*   CRITICAL/WARNING severity levels
+*   Configurable alert methods
+*   Cooldown protection
+*   Cross-platform network commands
+*   Persistent state for recovery detection
 
 ##### Commands
 
-```bash
+```shell
 ./internet-check.sh config   # Interactive configuration
 ./internet-check.sh start    # Start monitoring
 ./internet-check.sh status   # Show last check result
@@ -277,7 +267,7 @@ MONITOR_SERVICES=(docker nginx ssh mysql)   # Services to monitor
 
 **Location**: `~/.internet-check.conf`
 
-```bash
+```shell
 ALERT_METHOD="both"              # console, telegram, or both
 TELEGRAM_BOT_TOKEN="your_token"
 TELEGRAM_CHAT_ID="your_chat_id"
@@ -288,29 +278,26 @@ ALERT_ON_SUCCESS=false           # Only alert on failure/recovery
 
 ##### Example Output
 
-```
-==========================================
-🌐 Comprehensive Internet Connectivity Check
-==========================================
-Detected OS: linux-ubuntu
-Kernel: Linux 6.5.0-1018-oem x86_64
-
-📡 Checking network connectivity...
-Testing 8.8.8.8... ✓
-Testing 1.1.1.1... ✗
-Testing 208.67.222.222... ✗
-⚠️ Network connectivity: DEGRADED - 1/3 targets reachable
-
-🔍 Testing DNS resolution...
-google.com... ✓
-github.com... ✗
-cloudflare.com... ✗
-⚠️ DNS resolution: DEGRADED - 1/3 domains resolved
-
-🚨 CRITICAL: Internet connectivity is severely degraded
-```
-
----
+    ==========================================
+    🌐 Comprehensive Internet Connectivity Check
+    ==========================================
+    Detected OS: linux-ubuntu
+    Kernel: Linux 6.5.0-1018-oem x86_64
+    
+    📡 Checking network connectivity...
+    Testing 8.8.8.8... ✓
+    Testing 1.1.1.1... ✗
+    Testing 208.67.222.222... ✗
+    ⚠️ Network connectivity: DEGRADED - 1/3 targets reachable
+    
+    🔍 Testing DNS resolution...
+    google.com... ✓
+    github.com... ✗
+    cloudflare.com... ✗
+    ⚠️ DNS resolution: DEGRADED - 1/3 domains resolved
+    
+    🚨 CRITICAL: Internet connectivity is severely degraded
+    
 
 #### 🖥️ system-monitor.sh
 
@@ -318,17 +305,17 @@ cloudflare.com... ✗
 
 ##### Features
 
-- Multi-metric monitoring (CPU/RAM/Disk)
-- Dual thresholds (WARNING/CRITICAL)
-- Stateful alerting (alerts only on state change)
-- Recovery notifications
-- Configurable alert methods
-- Cross-platform commands
-- Per-metric cooldown
+*   Multi-metric monitoring (CPU/RAM/Disk)
+*   Dual thresholds (WARNING/CRITICAL)
+*   Stateful alerting (alerts only on state change)
+*   Recovery notifications
+*   Configurable alert methods
+*   Cross-platform commands
+*   Per-metric cooldown
 
 ##### Commands
 
-```bash
+```shell
 ./system-monitor.sh config    # Interactive configuration
 ./system-monitor.sh start     # Start monitoring
 ./system-monitor.sh status    # Show last check
@@ -342,7 +329,7 @@ cloudflare.com... ✗
 
 **Location**: `~/.system-monitor.conf`
 
-```bash
+```shell
 ALERT_METHOD="both"              # console, telegram, or both
 TELEGRAM_BOT_TOKEN="your_token"
 TELEGRAM_CHAT_ID="your_chat_id"
@@ -358,25 +345,20 @@ DISK_CRITICAL=90                 # Disk Critical at 90%
 
 ##### Example Output
 
-```
-==========================================
-🖥️ System Resource Monitor
-==========================================
-Timestamp: 2025-10-24 14:30:00
-OS: linux
-
-CPU Usage: 65.2%
-RAM Usage: 72.8%
-Disk Usage: 45%
-
-⚠️ WARNING: RAM usage is HIGH: 72.8% (threshold: 70%)
-```
-
----
+    ==========================================
+    🖥️ System Resource Monitor
+    ==========================================
+    Timestamp: 2025-10-24 14:30:00
+    OS: linux
+    
+    CPU Usage: 65.2%
+    RAM Usage: 72.8%
+    Disk Usage: 45%
+    
+    ⚠️ WARNING: RAM usage is HIGH: 72.8% (threshold: 70%)
+    
 
 ### Utility Scripts
-
----
 
 #### 💾 backup-manager.sh
 
@@ -384,16 +366,16 @@ Disk Usage: 45%
 
 ##### Features
 
-- Creates compressed archives (.tar.gz)
-- Retention policy (auto-delete old backups)
-- Cross-platform (uses tar/gzip)
-- Multiple source directories
-- Inspection mode (list archive contents)
-- Safe restoration
+*   Creates compressed archives (.tar.gz)
+*   Retention policy (auto-delete old backups)
+*   Cross-platform (uses tar/gzip)
+*   Multiple source directories
+*   Inspection mode (list archive contents)
+*   Safe restoration
 
 ##### Commands
 
-```bash
+```shell
 ./backup-manager.sh config                    # Interactive configuration
 ./backup-manager.sh create                    # Create timestamped backup
 ./backup-manager.sh clean                     # Apply retention policy
@@ -407,13 +389,11 @@ Disk Usage: 45%
 
 **Location**: `~/.backup-manager.conf`
 
-```bash
+```shell
 BACKUP_DIR="/tmp/backups"                    # Backup storage directory
 BACKUP_SOURCES=("/home/user/Documents" "/home/user/scripts")
 RETENTION_COUNT=7                            # Keep last 7 backups
 ```
-
----
 
 #### 🧹 log-cleaner.sh
 
@@ -421,15 +401,15 @@ RETENTION_COUNT=7                            # Keep last 7 backups
 
 ##### Features
 
-- Age-based cleanup (delete files older than X days)
-- Count-based rotation (keep only N newest files)
-- Dry-run mode (safe simulation)
-- Flexible target directories
-- Minimal dependencies (bash + find)
+*   Age-based cleanup (delete files older than X days)
+*   Count-based rotation (keep only N newest files)
+*   Dry-run mode (safe simulation)
+*   Flexible target directories
+*   Minimal dependencies (bash + find)
 
 ##### Commands
 
-```bash
+```shell
 ./log-cleaner.sh clean <path> <days>          # Delete files older than <days>
 ./log-cleaner.sh rotate <path> <count>        # Keep <count> newest files
 ./log-cleaner.sh dry-run clean <path> <days>  # Simulate cleanup
@@ -439,7 +419,7 @@ RETENTION_COUNT=7                            # Keep last 7 backups
 
 ##### Example Usage
 
-```bash
+```shell
 # Delete logs older than 30 days
 ./log-cleaner.sh clean /var/log/app +30
 
@@ -452,95 +432,93 @@ RETENTION_COUNT=7                            # Keep last 7 backups
 
 ##### Example Output
 
-```
-==========================================
-🧹 Log Cleaner - Dry Run Mode
-==========================================
-Action: Clean (Older than 30 days)
-Target Directory: /var/log/app
-
-[DRY-RUN] Would delete: /var/log/app/log_2025-09-01.log (35 days old)
-[DRY-RUN] Would delete: /var/log/app/log_2025-09-15.log (21 days old)
-[DRY-RUN] Would keep: /var/log/app/log_2025-10-01.log
-[DRY-RUN] Would keep: /var/log/app/log_2025-10-24.log
-
-Dry run complete. 2 files would be deleted.
-```
-
----
+    ==========================================
+    🧹 Log Cleaner - Dry Run Mode
+    ==========================================
+    Action: Clean (Older than 30 days)
+    Target Directory: /var/log/app
+    
+    [DRY-RUN] Would delete: /var/log/app/log_2025-09-01.log (35 days old)
+    [DRY-RUN] Would delete: /var/log/app/log_2025-09-15.log (21 days old)
+    [DRY-RUN] Would keep: /var/log/app/log_2025-10-01.log
+    [DRY-RUN] Would keep: /var/log/app/log_2025-10-24.log
+    
+    Dry run complete. 2 files would be deleted.
+    
 
 ## 💡 Notification Philosophy
 
-The project follows a **smart, non-spammy alerting** approach to ensure notifications are actionable and represent significant state changes.
+The project follows a smart, non-spammy alerting approach to ensure notifications are actionable and represent significant state changes.
 
-### Why Not All Scripts Have Telegram Integration
+### Telegram Notification Flow (Architecture)
+
+The monitoring scripts use a unified, stateful approach to sending alerts, ensuring you only get notified when a state *changes* (e.g., from `UP` to `CRITICAL` or `CRITICAL` to `RECOVERY`).
+
+<img src="https://github.com/user-attachments/assets/0b823aa2-81c6-4817-9333-8a13c6f135b3" alt="Telegram Notification Flow Architecture Diagram" width="300">
+
+Why Not All Scripts Have Telegram Integration
 
 | Script | Recommendation | Rationale |
-|--------|----------------|-----------|
-| `backup-manager.sh` | ❌ NOT a priority | Scheduled task; daily "Backup completed" messages would clutter Telegram. **Better**: Daily summary or only ERROR notifications (backup failed, disk full). |
-| `log-cleaner.sh` | ❌ NOT needed | Routine maintenance; success requires no notification. **Exception**: Alert only on FAILURE (permission denied, disk full). |
+| :--- | :--- | :--- |
+| `backup-manager.sh` | ❌ **NOT a priority** | Scheduled task; daily "Backup completed" messages would clutter Telegram. Better: Daily summary or only ERROR notifications (backup failed, disk full). |
+| `log-cleaner.sh` | ❌ **NOT needed** | Routine maintenance; success requires no notification. Exception: Alert only on FAILURE (permission denied, disk full). |
 
-### When to Send Notifications
+When to Send Notifications
 
-✅ **DO send alerts for:**
-- State changes (service stopped → running)
-- Threshold breaches (disk usage: normal → warning → critical)
-- Recovery events (host down → host up)
-- Errors and failures
+✅ **DO** send alerts for:
 
-❌ **DON'T send alerts for:**
-- Routine successful operations
-- Every periodic check (use state tracking instead)
-- Redundant information
+*   State changes (service stopped → running)
+*   Threshold breaches (disk usage: normal → warning → critical)
+*   Recovery events (host down → host up)
+*   Errors and failures
 
----
+❌ **DON'T** send alerts for:
+
+*   Routine successful operations
+*   Every periodic check (use state tracking instead)
+*   Redundant information
 
 ## 🆕 Roadmap
 
 Future enhancements planned for upcoming releases.
 
 | Priority | Feature | Status | Notes |
-|----------|---------|--------|-------|
-| **P1 (v1.1)** | Smart Telegram for system-monitor + internet-check | ✅ **DONE** | State tracking and recovery alerts implemented |
-| **P1 (v1.1)** | Severity levels (CRITICAL/WARNING/INFO) | ✅ **DONE** | Integrated into monitoring scripts |
-| **P1 (v1.1)** | Daily summary for backup-manager | ⏳ **PENDING** | Planned for v1.1 release |
-| **P2 (v1.2)** | Email notifications (fallback) | ⏳ **PENDING** | For non-Telegram environments |
-| **P2 (v1.2)** | Webhook support (Slack, Discord, Teams) | ⏳ **PENDING** | Corporate communication integration |
-| **P3 (v2.0)** | Prometheus exporter | ⏳ **PENDING** | Time-series monitoring |
-| **P3 (v2.0)** | Grafana dashboard templates | ⏳ **PENDING** | Metrics visualization |
-| **P3 (v2.0)** | Docker Compose deployment | ⏳ **PENDING** | Containerized deployment |
-
----
+| :--- | :--- | :--- | :--- |
+| P1 (v1.1) | Smart Telegram for system-monitor + internet-check | ✅ DONE | State tracking and recovery alerts implemented |
+| P1 (v1.1) | Severity levels (CRITICAL/WARNING/INFO) | ✅ DONE | Integrated into monitoring scripts |
+| P1 (v1.1) | Daily summary for backup-manager | ⏳ PENDING | Planned for v1.1 release |
+| P2 (v1.2) | Email notifications (fallback) | ⏳ PENDING | For non-Telegram environments |
+| P2 (v1.2) | Webhook support (Slack, Discord, Teams) | ⏳ PENDING | Corporate communication integration |
+| P3 (v2.0) | Prometheus exporter | ⏳ PENDING | Time-series monitoring |
+| P3 (v2.0) | Grafana dashboard templates | ⏳ PENDING | Metrics visualization |
+| P3 (v2.0) | Docker Compose deployment | ⏳ PENDING | Containerized deployment |
 
 ## 🤝 Contributing
 
 Contributions are welcome! If you have improvements or useful scripts:
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+*   Fork the repository
+*   Create a feature branch (`git checkout -b feature/amazing-feature`)
+*   Commit your changes (`git commit -m 'Add amazing feature'`)
+*   Push to the branch (`git push origin feature/amazing-feature`)
+*   Open a Pull Request
 
 ### Contribution Guidelines
 
-- Follow existing code style and structure
-- Include documentation and examples
-- Test on multiple platforms (Linux/macOS)
-- Update README if adding new features
-
----
+*   Follow existing code style and structure
+*   Include documentation and examples
+*   Test on multiple platforms (Linux/macOS)
+*   Update README if adding new features
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
-
----
+This project is licensed under the MIT License - see the LICENSE file for details
 
 ## 🧰 Maintainer
 
-**Artem Rivnyi**  
-Junior Technical Support / DevOps Enthusiast
+**Artem Rivnyi** — Junior Technical Support / DevOps Enthusiast
 
-- GitHub: [@ArtemRivnyi](https://github.com/ArtemRivnyi)
-- Repository: [bash-toolbox](https://github.com/ArtemRivnyi/bash-toolbox)
+* 📧 [artemrivnyi@outlook.com](mailto:artemrivnyi@outlook.com)  
+* 🔗 [LinkedIn](https://www.linkedin.com/in/artem-rivnyi/)  
+* 🌐 [Personal Projects](https://personal-page-devops.onrender.com/)  
+* 💻 [GitHub](https://github.com/ArtemRivnyi)
