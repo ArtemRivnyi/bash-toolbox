@@ -1,5 +1,10 @@
 # 🧰 Bash Toolbox
 
+![Shell](https://img.shields.io/badge/Language-Shell-121011?style=flat-square&logo=gnu-bash&logoColor=white )
+![DevOps](https://img.shields.io/badge/Category-DevOps-000000?style=flat-square )
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg )](https://opensource.org/licenses/MIT )
+[![Last Commit](https://img.shields.io/github/last-commit/ArtemRivnyi/bash-toolbox?label=Last%20Update&style=flat-square )](https://github.com/ArtemRivnyi/bash-toolbox/commits/main )
+
 Collection of lightweight, cross-platform Bash scripts for developers, sysadmins, and DevOps. Automate system monitoring, service checks, backups, log cleanup, and network tasks with minimal dependencies. Works on Linux, macOS, and hybrid environments.
 
 ## 📑 Table of Contents
