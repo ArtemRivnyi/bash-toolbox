@@ -1,0 +1,42 @@
+---
+- name: Ensure /usr/local/bin exists
+  file:
+    path: /usr/local/bin
+    state: directory
+    mode: '0755'
+
+- name: Copy bash scripts to /usr/local/bin
+  copy:
+    src: "{{ role_path }}/../../"  # Assuming script files are in the repository root
+    dest: /usr/local/bin/
+    mode: '0755'
+    owner: root
+    group: root
+  # Note: Adjust pattern below if scripts are in a specific subfolder like `scripts/`
+  # Pattern matches common shell extension, or the specific scripts we want
+  # e.g., using `with_fileglob` or specific paths in practice
+
+- name: Create configuration directory for Telegram
+  file:
+    path: /etc/bash-toolbox
+    state: directory
+    mode: '0750'
+    owner: root
+    group: root
+
+- name: Generate Telegram configuration from template
+  template:
+    src: telegram_config.j2
+    dest: /etc/bash-toolbox/telegram.conf
+    mode: '0600'
+    owner: root
+    group: root
+  when: telegram_bot_token is defined and telegram_chat_id is defined
+
+- name: Setup cron job for automated system monitoring
+  cron:
+    name: "System Monitoring Bash Toolbox"
+    minute: "0"
+    hour: "*/4"
+    job: "/usr/local/bin/system_monitor.sh >> /var/log/system_monitor.log 2>&1"
+    state: "{{ 'present' if enable_monitoring_cron | default(true) else 'absent' }}"
