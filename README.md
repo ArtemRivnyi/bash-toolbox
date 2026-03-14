@@ -1,4 +1,6 @@
-# 🧰 Bash Toolbox
+# [ARCHIVED] 🧰 Bash Toolbox
+
+> **Note:** This repository is archived and no longer actively maintained.
 
 ![Shell](https://img.shields.io/badge/Language-Shell-121011?style=flat-square&logo=gnu-bash&logoColor=white)
 ![DevOps](https://img.shields.io/badge/Category-DevOps-000000?style=flat-square)
