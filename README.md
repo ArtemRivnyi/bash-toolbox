@@ -115,3 +115,4 @@ MIT License. See [LICENSE](LICENSE) for details.
 * 🔗 [LinkedIn](https://www.linkedin.com/in/artem-rivnyi/)
 * 🌐 [Personal Projects](https://personal-page-devops.onrender.com/)
 * 💻 [GitHub](https://github.com/ArtemRivnyi)
+
