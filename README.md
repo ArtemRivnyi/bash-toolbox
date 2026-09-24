@@ -64,6 +64,7 @@ chmod +x *.sh
 | Script | Description | Features |
 | :--- | :--- | :--- |
 | `quick-diagnostics.sh` | Rapid system health assessment | CPU, RAM, Disk, Connectivity checks |
+| `docker-cleanup.sh` | Docker containers, images, volumes cleanup | Prunes dangling resources |
 | `backup-manager.sh` | Backup creation and management | Compression, retention, restore |
 | `log-cleaner.sh` | Log cleanup & rotation | Age-based, count-based, dry-run |
 
