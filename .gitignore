@@ -22,7 +22,8 @@ Thumbs.db
 *-backup.sh
 *.old
 
-# Test files
-/test/
+# Test artifacts
+/test/tmp/
 /temp/
+*.tap
 EOF

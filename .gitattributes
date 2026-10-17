@@ -1,0 +1,4 @@
+# Ensure shell scripts and test files always retain LF line endings
+*.sh text eol=lf
+*.bats text eol=lf
+.shellcheckrc text eol=lf

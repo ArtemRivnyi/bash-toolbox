@@ -1,0 +1,10 @@
+# ShellCheck configuration for bash-toolbox
+# Docs: https://github.com/koalaman/shellcheck/wiki
+
+# Allow dynamic configuration sourcing (e.g., source "$CONFIG_FILE")
+disable=SC1090
+disable=SC1091
+
+# Exclude optional stylistic checks
+disable=SC2034 # Unused variables (often exported or sourced)
+disable=SC2154 # Referenced but not assigned (in templates or environment variables)

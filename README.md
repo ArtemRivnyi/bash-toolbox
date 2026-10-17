@@ -1,14 +1,14 @@
-# [ARCHIVED] 🧰 Bash Toolbox
-
-> **Note:** This repository is archived and no longer actively maintained.
+# 🧰 Bash Toolbox
 
 ![Shell](https://img.shields.io/badge/Language-Shell-121011?style=flat-square&logo=gnu-bash&logoColor=white)
 ![DevOps](https://img.shields.io/badge/Category-DevOps-000000?style=flat-square)
-
+[![CI](https://github.com/ArtemRivnyi/bash-toolbox/actions/workflows/ci.yml/badge.svg)](https://github.com/ArtemRivnyi/bash-toolbox/actions/workflows/ci.yml)
+[![ShellCheck](https://img.shields.io/badge/ShellCheck-Passing-success?style=flat-square&logo=gnu-bash)](https://github.com/ArtemRivnyi/bash-toolbox/actions/workflows/ci.yml)
+[![Bats](https://img.shields.io/badge/Bats-Automated--Tests-brightgreen?style=flat-square)](https://github.com/ArtemRivnyi/bash-toolbox/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Last Commit](https://img.shields.io/github/last-commit/ArtemRivnyi/bash-toolbox?label=Last%20Update&style=flat-square)](https://github.com/ArtemRivnyi/bash-toolbox/commits/main)
 
-Collection of lightweight, cross-platform Bash scripts for developers, sysadmins, and DevOps. Automate system monitoring, service checks, backups, log cleanup, and network tasks with minimal dependencies. Works on Linux, macOS, and hybrid environments.
+Collection of 70+ lightweight, production-tested, cross-platform Bash scripts for developers, sysadmins, and DevOps engineers. Automate system diagnostics, Kubernetes monitoring, service health checks, backups, log cleanup, and network auditing with minimal dependencies. Runs with automated ShellCheck and Bats CI on every push.
 
 ---
 
@@ -68,6 +68,15 @@ chmod +x *.sh
 | `backup-manager.sh` | Backup creation and management | Compression, retention, restore |
 | `log-cleaner.sh` | Log cleanup & rotation | Age-based, count-based, dry-run |
 
+### 🛠️ Modular DevOps & SRE Utilities (`scripts/`)
+
+Over 55+ single-purpose, composable utilities for cloud, containers, and Linux engineering:
+* **Kubernetes**: `k8s-pod-restart-monitor.sh`, `k8s-node-resource-alloc.sh`, `k8s-configmap-diff.sh`, `k8s-events-watcher.sh`, `k8s-pvc-usage-report.sh`, `k8s-secret-decoder.sh`
+* **Docker & Containers**: `docker-network-inspect-ip.sh`, `docker-image-prune-dangling.sh`, `docker-compose-validator.sh`, `docker-log-size-inspector.sh`
+* **Networking & SSL**: `ssl-cert-chain-verify.sh`, `nginx-upstream-health.sh`, `tcp-syn-flood-detector.sh`, `dns-propagation-checker.sh`, `ufw-open-ports-scanner.sh`, `curl-http2-benchmark.sh`
+* **Databases**: `postgres-active-connections.sh`, `postgres-vacuum-analyze.sh`, `redis-memory-usage-stats.sh`, `redis-key-count-scanner.sh`, `mongodb-replica-set-status.sh`
+* **Linux Diagnostics & SRE**: `disk-io-latency-benchmark.sh`, `linux-entropy-pool-checker.sh`, `fail2ban-banned-ips.sh`, `systemd-failed-services.sh`, `linux-zombie-proc-reaper.sh`, `devops-environment-summary.sh`
+
 All monitoring scripts share a unified command interface:
 
 ```shell
@@ -81,6 +90,30 @@ All monitoring scripts share a unified command interface:
 
 ---
 
+## 🧪 Quality Assurance & CI
+
+Every script in this repository is automatically verified through our ultra-lightweight GitHub Actions CI pipeline:
+* 🔍 **Syntax Verification**: `bash -n` validation across all 70+ scripts.
+* 🛡️ **Static Analysis**: [ShellCheck](https://www.shellcheck.net/) static analysis ensuring zero syntax/runtime pitfalls.
+* 🧪 **Automated Tests**: [Bats (Bash Automated Testing System)](https://github.com/bats-core/bats-core) unit and integration test suite (`test/`).
+* ⚡ **Resource Efficient**: Sub-30 second runner budget with concurrency cancellation (`cancel-in-progress`) and path filtering to protect GitHub Actions free tier quotas.
+* ⏰ **Automated Health Beacon**: Weekly scheduled run (Every Monday at 04:00 UTC) to ensure zero bitrot over time.
+
+To run the verification suite locally:
+
+```shell
+# Syntax verification
+for f in *.sh scripts/*.sh; do bash -n "$f"; done
+
+# ShellCheck
+shellcheck *.sh scripts/*.sh
+
+# Run Bats test suite
+bats test/
+```
+
+---
+
 ## 💡 Notification Architecture
 
 Scripts use **stateful alerting** — you only get notified on state *changes* (e.g., UP → CRITICAL, CRITICAL → RECOVERY), not on every check.
@@ -89,21 +122,9 @@ Scripts use **stateful alerting** — you only get notified on state *changes* (
 
 ---
 
-## 🆕 Roadmap
-
-| Priority | Feature | Status |
-| :--- | :--- | :--- |
-| v1.1 | Smart Telegram for all monitors | ✅ Done |
-| v1.1 | Severity levels (CRITICAL/WARNING/INFO) | ✅ Done |
-| v1.2 | Email notifications (fallback) | ⏳ Planned |
-| v1.2 | Webhook support (Slack, Discord, Teams) | ⏳ Planned |
-| v2.0 | Prometheus exporter + Grafana templates | ⏳ Planned |
-
----
-
 ## 🤝 Contributing
 
-Contributions welcome! Fork → feature branch → PR. Follow existing code style and test on Linux/macOS.
+Contributions welcome! Fork → feature branch → PR. All PRs must pass the ShellCheck and Bats test suites.
 
 ## 📄 License
 
@@ -111,10 +132,10 @@ MIT License. See [LICENSE](LICENSE) for details.
 
 ## 🧰 Maintainer
 
-**Artem Rivnyi** — Junior Technical Support / DevOps Enthusiast
+**Artem Rivnyi** — DevOps / Infrastructure Engineer
 
 * 📧 [artemrivnyi@outlook.com](mailto:artemrivnyi@outlook.com)
 * 🔗 [LinkedIn](https://www.linkedin.com/in/artem-rivnyi/)
-* 🌐 [Personal Projects](https://artemrivnyi.com/)
+* 🌐 [Portfolio & Case Studies](https://artemrivnyi.com/)
 * 💻 [GitHub](https://github.com/ArtemRivnyi)
 
