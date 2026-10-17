@@ -69,9 +69,7 @@ jobs:
           echo "- **ShellCheck Linter:** ✅ PASSED (zero warnings/errors)" >> $GITHUB_STEP_SUMMARY
 
       - name: Setup Bats (Bash Automated Testing System)
-        uses: bats-core/bats-action@v2
-        with:
-          bats-version: 1.11.0
+        run: sudo npm install -g bats
 
       - name: Run Bats Test Suite
         run: |
