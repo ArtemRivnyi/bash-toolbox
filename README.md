@@ -115,6 +115,6 @@ MIT License. See [LICENSE](LICENSE) for details.
 
 * 📧 [artemrivnyi@outlook.com](mailto:artemrivnyi@outlook.com)
 * 🔗 [LinkedIn](https://www.linkedin.com/in/artem-rivnyi/)
-* 🌐 [Personal Projects](https://personal-page-devops.onrender.com/)
+* 🌐 [Personal Projects](https://artemrivnyi.com/)
 * 💻 [GitHub](https://github.com/ArtemRivnyi)
 
