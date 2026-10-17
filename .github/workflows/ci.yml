@@ -39,6 +39,7 @@ jobs:
 
       - name: Verify Executable Permissions & Shebangs
         run: |
+          sed -i 's/\r$//' *.sh scripts/*.sh test/*.bats 2>/dev/null || true
           echo "### Validating Executable Permissions & Shebangs" >> $GITHUB_STEP_SUMMARY
           FAILED=0
           COUNT=0

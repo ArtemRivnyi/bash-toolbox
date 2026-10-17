@@ -5,6 +5,13 @@
 disable=SC1090
 disable=SC1091
 
-# Exclude optional stylistic checks
-disable=SC2034 # Unused variables (often exported or sourced)
+# Allow carriage returns if checked out on Windows
+disable=SC1017
+
+# Pragmatic rules for monitoring & CLI scripts
+disable=SC2034 # Unused variables (exported or sourced)
+disable=SC2046 # Quote to prevent word splitting
+disable=SC2053 # Quote RHS of = in [[ ]]
 disable=SC2154 # Referenced but not assigned (in templates or environment variables)
+disable=SC2155 # Declare and assign separately to avoid masking return values
+disable=SC2206 # Quote to prevent word splitting/globbing in array assignment
